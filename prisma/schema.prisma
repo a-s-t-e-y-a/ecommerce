@@ -6,13 +6,77 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
- 
+model about {
+  id          Int     @id @default(autoincrement())
+  heading     String
+  description String
+  videos_link String?
+  image       String
+  created_on  String
+}
+
+model admin {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String?
+  updated_on DateTime
+}
+
+model user {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  password     String
+  mobile       String
+  alter_mobile String?
+  created_on   DateTime
+  updated_on   String?
+  address      String
+  status       Int
+}
+
+model products {
+  products_id             Int      @id @default(autoincrement())
+  product_model_name      String?
+  product_model_number    String?
+  product_color           String?
+  capacity                String?
+  use_for                 String?
+  lens_matrial            String?
+  shape                   String?
+  style                   String?
+  dimensions              String?
+  country_of_origin       String?
+  row_metrial_source_from String?
+  material                String?
+  show_lens_list          Int?
+  warranty                String?
+  product_description     String?
+  product_price           String?
+  discounted_price        Int?
+  product_images          String?
+  image                   String?
+  offer                   String?
+  glasses_size            String?
+  bought                  String?
+  rating                  Int?
+  frame_width             String?
+  temple_length           String?
+  lens_height             String?
+  coupon_code             String?
+  coupon_amount           Int?
+  stokke                  Int?
+  product_url             String?
+  seo_title               String?
+  keyword                 String?
+  created_on              DateTime?
+  updated_on              DateTime?
+  products_categories_id  String?
+  products_brand_id       Int?
+  status                  Int?
 }
