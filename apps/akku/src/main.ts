@@ -5,15 +5,14 @@
 
 import express from 'express';
 import * as path from 'path';
-import { PrismaClient } from '@prisma/client';
+
 import mainRouter from './mainRoute';
 
-const prisma = new PrismaClient();
 const app = express();
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-app.use(mainRouter)
+app.use(mainRouter);
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
