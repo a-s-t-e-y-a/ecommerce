@@ -20,11 +20,20 @@ export async function getProductById(req: Request, res: Response) {
 }
 
 export async function getProducts(req: Request, res: Response) {
-    try {
-      const products = await prisma.products.findMany();
-      return res.json(products);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      return res.status(500).json({ error: 'Error fetching products' });
-    }
+  try {
+    const page = parseInt(req.query.page as string) || 1; 
+    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 4; 
+
+    const skip = (page - 1) * itemsPerPage;
+
+    const products = await prisma.products.findMany({
+      take: itemsPerPage,
+      skip: skip,
+    });
+
+    return res.json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return res.status(500).json({ error: 'Error fetching products' });
   }
+}
