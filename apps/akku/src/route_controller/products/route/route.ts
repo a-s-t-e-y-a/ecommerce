@@ -1,9 +1,9 @@
 import express from 'express';
 
-import { createProduct } from './controller/create';
-import { getProductById, getProducts } from './controller/get';
-import { deleteProduct } from './controller/delete';
-import { updateProduct } from './controller/edit';
+import { createProduct } from '../controller/product/create';
+import { getProductById, getProducts } from '../controller/product/get';
+import { deleteProduct } from '../controller/product/delete';
+import { updateProduct } from '../controller/product/edit';
 
 const routerProduct = express.Router();
 

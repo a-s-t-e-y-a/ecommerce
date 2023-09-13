@@ -38,10 +38,11 @@ model user {
   updated_on   String?
   address      String
   status       Int
+  Cart         cart?
 }
 
 model products {
-  products_id             Int      @id @default(autoincrement())
+  products_id             Int                 @id @default(autoincrement())
   product_model_name      String?
   product_model_number    String?
   product_color           String?
@@ -76,7 +77,48 @@ model products {
   keyword                 String?
   created_on              DateTime?
   updated_on              DateTime?
-  products_categories_id  String?
-  products_brand_id       Int?
   status                  Int?
+  productBrand            product_brands     @relation(fields: [productBrandId], references: [products_brand_id])
+  productBrandId          Int
+  productCategories       product_categories @relation(fields: [productCategoriesId], references: [products_categories_id])
+  productCategoriesId     Int
+  Cart                    cart[]
+
+}
+
+model product_brands {
+  products_brand_id      Int        @id @default(autoincrement())
+  brand_name             String?
+  products_categories_id String?
+  created_on             String?
+  updated_on             String?
+  url                    String?
+  products               products[]
+}
+
+model product_categories {
+  products_categories_id Int        @id @default(autoincrement())
+  name                   String?
+  image                  String?
+  position               Int?
+  created_on             String?
+  updated_on             String?
+  status                 Int        @default(1)
+  url                    String?
+  products               products[]
+}
+
+model cart {
+  id   Int       @id @default(autoincrement())
+  pId  products? @relation(fields: [p_id], references: [products_id])
+  p_id Int?      @unique
+  price       String
+  qty         Int
+  date        DateTime @default(now()) @updatedAt
+  coupon_code String?
+  user_ip     String
+  l_id        Int?
+  l_price     Int?
+  user        user?    @relation(fields: [user_id], references: [id])
+  user_id     Int?     @unique
 }
