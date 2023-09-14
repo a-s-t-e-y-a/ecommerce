@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import express from 'express';
 import * as path from 'path';
 
@@ -12,7 +7,10 @@ const app = express();
 
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-app.use(mainRouter);
+// Add middleware to parse JSON data
+app.use(express.json());
+
+app.use('/api', mainRouter);
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
