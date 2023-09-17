@@ -116,7 +116,7 @@ model cart {
   pId         products? @relation(fields: [p_id], references: [products_id])
   p_id        Int?      @unique
   price       String
-  qty         Int
+  qty         Int @default(0)
   date        DateTime  @default(now()) @updatedAt
   coupon_code String?
   user_ip     String

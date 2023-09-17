@@ -40,8 +40,8 @@ export async function verifyToken(
           401
         );
       }
-
-      req.userId = decoded.userId;
+      console.log(decoded)
+      req.userId = decoded.id;
       next();
     });
   } catch (err) {

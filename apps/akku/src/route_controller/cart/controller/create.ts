@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 
 interface CreateCartItemRequest {
   p_id: number;
-  price: string;
   qty: number;
   coupon_code?: string | null;
   user_ip: string;
@@ -14,18 +13,17 @@ interface CreateCartItemRequest {
   l_price?: number | null;
   user_id: number;
 }
-
-export const createCartItem = async (req: Request, res: Response) => {
+interface Authenticate extends Request {
+    userId :number
+}
+export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
     const {
       p_id,
-      price,
       qty,
       coupon_code,
-      user_ip,
       l_id,
       l_price,
-      user_id,
     }: CreateCartItemRequest = req.body;
     const product = await prisma.products.findUnique({
       where: {
@@ -44,7 +42,7 @@ export const createCartItem = async (req: Request, res: Response) => {
         user_ip:req.socket.remoteAddress    ,
         l_id,
         l_price,
-        user: { connect: { id: user_id } },
+        user: { connect: { id: req.userId} },
       },
     });
 
