@@ -24,7 +24,11 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "rules": {
+        "no-console": [
+          "error"
+        ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

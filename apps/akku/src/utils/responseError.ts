@@ -1,8 +1,8 @@
 import { Response } from 'express';
 interface MyInterface {
-  message: String;
+  message: string;
   status: number;
-  TypeError: String;
+  TypeError: string;
 }
 
 export function responseError(res: Response, err: MyInterface) {

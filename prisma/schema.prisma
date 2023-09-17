@@ -42,7 +42,7 @@ model user {
 }
 
 model products {
-  products_id             Int                 @id @default(autoincrement())
+  products_id             Int                @id @default(autoincrement())
   product_model_name      String?
   product_model_number    String?
   product_color           String?
@@ -83,42 +83,69 @@ model products {
   productCategories       product_categories @relation(fields: [productCategoriesId], references: [products_categories_id])
   productCategoriesId     Int
   Cart                    cart[]
-
 }
 
 model product_brands {
-  products_brand_id      Int        @id @default(autoincrement())
+  products_brand_id      Int                @id @default(autoincrement())
   brand_name             String?
-  products_categories_id String?
+  categories_id          product_categories @relation(fields: [products_categories_id], references: [products_categories_id])
+  products_categories_id Int
   created_on             String?
   updated_on             String?
   url                    String?
   products               products[]
+  lenses                 lenses[]
 }
 
 model product_categories {
-  products_categories_id Int        @id @default(autoincrement())
+  products_categories_id Int              @id @default(autoincrement())
   name                   String?
   image                  String?
   position               Int?
   created_on             String?
   updated_on             String?
-  status                 Int        @default(1)
+  status                 Int              @default(1)
   url                    String?
   products               products[]
+  brand                  product_brands[]
+  lenses                 lenses[]
 }
 
 model cart {
-  id   Int       @id @default(autoincrement())
-  pId  products? @relation(fields: [p_id], references: [products_id])
-  p_id Int?      @unique
+  id          Int       @id @default(autoincrement())
+  pId         products? @relation(fields: [p_id], references: [products_id])
+  p_id        Int?      @unique
   price       String
   qty         Int
-  date        DateTime @default(now()) @updatedAt
+  date        DateTime  @default(now()) @updatedAt
   coupon_code String?
   user_ip     String
   l_id        Int?
   l_price     Int?
-  user        user?    @relation(fields: [user_id], references: [id])
-  user_id     Int?     @unique
+  user        user?     @relation(fields: [user_id], references: [id])
+  user_id     Int?      @unique
+}
+
+model lenses {
+  id                                Int                @id @default(autoincrement())
+  heading                           String
+  price                             String
+  warranty_period                   Int
+  thickness                         String
+  power_range                       String
+  blue_light_blocker                Int?
+  anti_scratch_coating              Int?
+  both_side_anti_glare_coating      Int?
+  both_side_anti_reflective_coating Int?
+  uv_protection                     Int?
+  water_and_dust_repellent          Int?
+  breakage_and_crack_resistant      Int?
+  offer                             String
+  categories_id                     product_categories @relation(fields: [products_categories_id], references: [products_categories_id])
+  products_categories_id            Int
+  brand_id                          product_brands     @relation(fields: [products_brand_id], references: [products_brand_id])
+  products_brand_id                 Int
+  power_type                        Int
+  created_at                        String
+  updated_at                        String?
 }
