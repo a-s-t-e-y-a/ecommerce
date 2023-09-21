@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { CustomError } from 'apps/akku/src/utils/errorThrow';
+import { responseError } from 'apps/akku/src/utils/responseError';
+import { responseSuccess } from 'apps/akku/src/utils/responseSuccess';
+import { CustomSuccess } from 'apps/akku/src/utils/succes';
 
 const prisma = new PrismaClient();
 
@@ -14,46 +17,56 @@ interface CreateCartItemRequest {
   user_id: number;
 }
 interface Authenticate extends Request {
-    userId :number
+  userId: number;
 }
 export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
-    const {
-      p_id,
-      qty,
-      coupon_code,
-      l_id,
-      l_price,
-    }: CreateCartItemRequest = req.body;
+    const { p_id, qty, coupon_code, l_id, l_price }: CreateCartItemRequest =
+      req.body;
     const product = await prisma.products.findUnique({
       where: {
         products_id: p_id,
       },
     });
-    if(!product){
-        throw new CustomError('Item does not exist','Bad Request',404)
+    if (!product) {
+      throw new CustomError('Item does not exist', 'Bad Request', 404);
     }
-    const newCartItem = await prisma.cart.create({
-      data: {
-        pId: { connect: { products_id: p_id } },
-        price:product.product_price,
-        qty,
-        coupon_code,
-        user_ip:req.socket.remoteAddress    ,
-        l_id,
-        l_price,
-        user: { connect: { id: req.userId} },
+    const findProduct = await prisma.cart.findUnique({
+      where: {
+        p_id: p_id,
       },
     });
-
-    res.status(201).json(newCartItem);
+    if (findProduct) {
+      const updateCart = await prisma.cart.update({
+        where: {
+          p_id: p_id,
+        },
+        data: {
+          qty: findProduct.qty + 1,
+        },
+      });
+      responseSuccess(res,new CustomSuccess('Item qunatity increased in cart',updateCart,200))
+    } else {
+      const newCartItem = await prisma.cart.create({
+        data: {
+          pId: { connect: { products_id: p_id } },
+          price: product.product_price,
+          qty,
+          coupon_code,
+          user_ip: req.socket.remoteAddress,
+          l_id,
+          l_price,
+          user: { connect: { id: req.userId } },
+        },
+      });
+      responseSuccess(res,new CustomSuccess('Item added in cart',newCartItem,200))
+    }
   } catch (error) {
     console.error('Error creating cart item:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    responseError(res,error)
   }
 };
 
-// Close the Prisma client when your application exits
 process.on('exit', () => {
   prisma.$disconnect();
 });
