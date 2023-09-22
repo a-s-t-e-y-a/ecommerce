@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 interface CreateCartItemRequest {
   p_id: number;
   qty: number;
-  coupon_code?: string | null;
+  coupon?: string | null;
   user_ip: string;
   l_id?: number | null;
   l_price?: number | null;
@@ -21,7 +21,7 @@ interface Authenticate extends Request {
 }
 export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
-    const { p_id, qty, coupon_code, l_id, l_price }: CreateCartItemRequest =
+    const { p_id, qty, coupon, l_id, l_price }: CreateCartItemRequest =
       req.body;
     const product = await prisma.products.findUnique({
       where: {
@@ -45,25 +45,14 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
           qty: findProduct.qty + 1,
         },
       });
-      responseSuccess(res,new CustomSuccess('Item qunatity increased in cart',updateCart,200))
-    } else {
-      const newCartItem = await prisma.cart.create({
-        data: {
-          pId: { connect: { products_id: p_id } },
-          price: product.product_price,
-          qty,
-          coupon_code,
-          user_ip: req.socket.remoteAddress,
-          l_id,
-          l_price,
-          user: { connect: { id: req.userId } },
-        },
-      });
-      responseSuccess(res,new CustomSuccess('Item added in cart',newCartItem,200))
-    }
+      responseSuccess(
+        res,
+        new CustomSuccess('Item qunatity increased in cart', updateCart, 200)
+      );
+    } 
   } catch (error) {
     console.error('Error creating cart item:', error);
-    responseError(res,error)
+    responseError(res, error);
   }
 };
 

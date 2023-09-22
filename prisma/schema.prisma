@@ -28,9 +28,9 @@ model admin {
 }
 
 model user {
-  id           Int      @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   name         String
-  email        String   @unique
+  email        String        @unique
   password     String
   mobile       String
   alter_mobile String?
@@ -39,6 +39,9 @@ model user {
   address      String
   status       Int
   Cart         cart?
+  session      session?
+  orderItem    orderItem?
+  orderDetails orderDetails?
 }
 
 model products {
@@ -83,6 +86,7 @@ model products {
   productCategories       product_categories @relation(fields: [productCategoriesId], references: [products_categories_id])
   productCategoriesId     Int
   Cart                    cart[]
+  orderItem               orderItem[]
 }
 
 model product_brands {
@@ -111,21 +115,6 @@ model product_categories {
   lenses                 lenses[]
 }
 
-model cart {
-  id          Int       @id @default(autoincrement())
-  pId         products? @relation(fields: [p_id], references: [products_id])
-  p_id        Int?      @unique
-  price       String
-  qty         Int @default(0)
-  date        DateTime  @default(now()) @updatedAt
-  coupon_code String?
-  user_ip     String
-  l_id        Int?
-  l_price     Int?
-  user        user?     @relation(fields: [user_id], references: [id])
-  user_id     Int?      @unique
-}
-
 model lenses {
   id                                Int                @id @default(autoincrement())
   heading                           String
@@ -148,4 +137,69 @@ model lenses {
   power_type                        Int
   created_at                        String
   updated_at                        String?
+  lenses                            cart[]
+  orderItem                         orderItem[]
+}
+
+model cart {
+  id      Int       @id @default(autoincrement())
+  pId     products? @relation(fields: [p_id], references: [products_id])
+  p_id    Int?      @unique
+  price   String
+  qty     Int       @default(1)
+  date    DateTime  @default(now()) @updatedAt
+  user_ip String
+  l_id    Int?
+  lId     lenses?   @relation(fields: [l_id], references: [id])
+  user    user?     @relation(fields: [user_id], references: [id])
+  user_id Int?      @unique
+}
+
+model Coupon_code {
+  id                 Int       @id @default(autoincrement())
+  coupon_code        String
+  discount           String
+  minimuim_condition Int
+  session            session[]
+}
+
+model session {
+  id           Int          @id @default(autoincrement())
+  total        Int @default(0)
+  session_Id   String
+  created_at   DateTime @default(now())
+  user         user         @relation(fields: [userId], references: [id])
+  userId       Int          @unique 
+  couponCode   Coupon_code? @relation(fields: [couponCodeId], references: [id])
+  couponCodeId Int?
+}
+
+model orderItem {
+  id        Int       @id @default(autoincrement())
+  pId       products? @relation(fields: [p_id], references: [products_id])
+  p_id      Int?
+  date      DateTime  @default(now()) @updatedAt
+  user_ip   String
+  l_id      Int?
+  lId       lenses?   @relation(fields: [l_id], references: [id])
+  user      user?     @relation(fields: [user_id], references: [id])
+  user_id   Int?      @unique
+  sessionId Int
+}
+
+model orderDetails {
+  id             Int            @id @default(autoincrement())
+  user           user?          @relation(fields: [user_id], references: [id])
+  user_id        Int?           @unique
+  total          Int
+  paymentDeatils paymentDeatils @relation(fields: [paymentId], references: [id])
+  paymentId      Int
+}
+
+model paymentDeatils {
+  id           Int            @id @default(autoincrement())
+  orderdetails orderDetails[]
+  amount       Int
+  provider     String
+  status       String
 }

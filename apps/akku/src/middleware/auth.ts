@@ -13,7 +13,6 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
-    console.log(req.cookies.jwt)
     if (req.cookies.jwt == undefined) {
       throw new CustomError(
         'Please login first',
@@ -40,7 +39,6 @@ export async function verifyToken(
           401
         );
       }
-      console.log(decoded)
       req.userId = decoded.id;
       next();
     });

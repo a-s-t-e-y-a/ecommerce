@@ -1,8 +1,9 @@
 import express from 'express'
 import { verifyToken } from '../../middleware/auth'
 import { createCartItem } from './controller/create'
+import { sessionCheck } from '../../middleware/sessionCheck'
 const cartRoute = express.Router()
 
-cartRoute.get('/',verifyToken)
+cartRoute.post('/',verifyToken,sessionCheck,createCartItem)
 
 export default cartRoute
