@@ -23,14 +23,6 @@ export async function verifyToken(
  
     const token = req.cookies.jwt;
 
-    if (!token) {
-      throw new CustomError(
-        'Token verification failed',
-        'Unauthorized error',
-        401
-      );
-    }
-
     jwt.verify(token, 'BEARER', (err, decoded) => {
       if (err) {
         throw new CustomError(
@@ -39,7 +31,7 @@ export async function verifyToken(
           401
         );
       }
-      req.userId = decoded.id;
+      req.userId = decoded.find.id;
       next();
     });
   } catch (err) {

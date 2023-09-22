@@ -54,9 +54,10 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
           price: product.product_price,
           user_ip: req.ip,
           user: { connect: { id: req.userId } },
-          sessionId : req.
+          sessionId : {connect:{session_Id:req.sessionId}}
         },
       });
+      console.log(createCartItem)
       responseSuccess(
         res,
         new CustomSuccess('Item added to cart', createNew, 200)
