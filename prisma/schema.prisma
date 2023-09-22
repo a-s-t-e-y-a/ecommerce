@@ -38,7 +38,7 @@ model user {
   updated_on   String?
   address      String
   status       Int
-  Cart         cart?
+  Cart         cartItem?
   session      session?
   orderItem    orderItem?
   orderDetails orderDetails?
@@ -85,7 +85,7 @@ model products {
   productBrandId          Int
   productCategories       product_categories @relation(fields: [productCategoriesId], references: [products_categories_id])
   productCategoriesId     Int
-  Cart                    cart[]
+  Cart                    cartItem[]
   orderItem               orderItem[]
 }
 
@@ -137,11 +137,11 @@ model lenses {
   power_type                        Int
   created_at                        String
   updated_at                        String?
-  lenses                            cart[]
+  lenses                            cartItem[]
   orderItem                         orderItem[]
 }
 
-model cart {
+model cartItem {
   id      Int       @id @default(autoincrement())
   pId     products? @relation(fields: [p_id], references: [products_id])
   p_id    Int?      @unique
@@ -165,11 +165,11 @@ model Coupon_code {
 
 model session {
   id           Int          @id @default(autoincrement())
-  total        Int @default(0)
+  total        Int          @default(0)
   session_Id   String
-  created_at   DateTime @default(now())
+  created_at   DateTime     @default(now())
   user         user         @relation(fields: [userId], references: [id])
-  userId       Int          @unique 
+  userId       Int          @unique
   couponCode   Coupon_code? @relation(fields: [couponCodeId], references: [id])
   couponCodeId Int?
 }

@@ -21,8 +21,7 @@ interface Authenticate extends Request {
 }
 export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
-    const { p_id, qty, coupon, l_id, l_price }: CreateCartItemRequest =
-      req.body;
+    const { p_id }: CreateCartItemRequest = req.body;
     const product = await prisma.products.findUnique({
       where: {
         products_id: p_id,
@@ -31,13 +30,13 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
     if (!product) {
       throw new CustomError('Item does not exist', 'Bad Request', 404);
     }
-    const findProduct = await prisma.cart.findUnique({
+    const findProduct = await prisma.cartItem.findUnique({
       where: {
         p_id: p_id,
       },
     });
     if (findProduct) {
-      const updateCart = await prisma.cart.update({
+      const updateCart = await prisma.cartItem.update({
         where: {
           p_id: p_id,
         },
@@ -49,7 +48,20 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
         res,
         new CustomSuccess('Item qunatity increased in cart', updateCart, 200)
       );
-    } 
+    } else {
+      const createNew = await prisma.cartItem.create({
+        data: {
+          pId: { connect: { products_id: p_id } },
+          price: product.product_price,
+          user_ip: req.ip,
+          user: { connect: { id: req.userId } },
+        },
+      });
+      responseSuccess(
+        res,
+        new CustomSuccess('Item added to cart', createNew, 200)
+      );
+    }
   } catch (error) {
     console.error('Error creating cart item:', error);
     responseError(res, error);
