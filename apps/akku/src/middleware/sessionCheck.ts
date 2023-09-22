@@ -3,10 +3,8 @@ import { responseError } from 'apps/akku/src/utils/responseError';
 import { Response, Request, NextFunction } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
+import { Authenticate } from '../interfaces/reqInterface';
 
-interface Authenticate extends Request {
-  userId: number;
-}
 
 const prisma = new PrismaClient();
 
@@ -25,12 +23,14 @@ export async function sessionCheck(
         },
       });
       if (sessionFind) {
-        if (
-          req.method == 'UPDATE' ||
-          req.method == 'DELETE' 
-        ) {
-          throw new CustomError('either Session is not created or cart is empty', 'Bad request', 400);
+        if (req.method == 'UPDATE' || req.method == 'DELETE') {
+          throw new CustomError(
+            'either Session is not created or cart is empty',
+            'Bad request',
+            400
+          );
         } else {
+          req.sessionId = sessionFind.session_Id;
           next();
         }
       } else {
@@ -40,6 +40,7 @@ export async function sessionCheck(
             user: { connect: { id: req.userId } },
           },
         });
+        req.sessionId = sessionFind.session_Id;
         next();
       }
     });

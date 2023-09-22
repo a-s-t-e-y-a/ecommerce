@@ -4,6 +4,7 @@ import { CustomError } from 'apps/akku/src/utils/errorThrow';
 import { responseError } from 'apps/akku/src/utils/responseError';
 import { responseSuccess } from 'apps/akku/src/utils/responseSuccess';
 import { CustomSuccess } from 'apps/akku/src/utils/succes';
+import { Authenticate } from 'apps/akku/src/interfaces/reqInterface';
 
 const prisma = new PrismaClient();
 
@@ -16,9 +17,7 @@ interface CreateCartItemRequest {
   l_price?: number | null;
   user_id: number;
 }
-interface Authenticate extends Request {
-  userId: number;
-}
+
 export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
     const { p_id }: CreateCartItemRequest = req.body;
@@ -55,6 +54,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
           price: product.product_price,
           user_ip: req.ip,
           user: { connect: { id: req.userId } },
+          sessionId : req.
         },
       });
       responseSuccess(

@@ -153,6 +153,7 @@ model cartItem {
   lId     lenses?   @relation(fields: [l_id], references: [id])
   user    user?     @relation(fields: [user_id], references: [id])
   user_id Int?      @unique
+  sessionId String
 }
 
 model Coupon_code {
