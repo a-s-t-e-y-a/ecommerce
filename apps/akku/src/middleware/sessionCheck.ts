@@ -22,31 +22,28 @@ export async function sessionCheck(
         },
       });
       if (sessionFind) {
-        // if (req.method == 'UPDATE' || req.method == 'DELETE') {
-        //   throw new CustomError(
-        //     'either Session is not created or cart is empty',
-        //     'Bad request',
-        //     400
-        //   );
-        // } else {
         req.sessionId = sessionFind.session_Id;
         next();
-        //
       } else {
-        console.log(req.userId)
-        const sessionCreate = await prisma.session.create({
-          data: {
-            session_Id: uuidv4(),
-            user: { connect: { id: req.userId } },
-          },
-        });
-        console.log();
-        req.sessionId = sessionCreate.session_Id;
-        next();
+        if (req.method == 'POST') {
+          console.log(req.userId);
+          const sessionCreate = await prisma.session.create({
+            data: {
+              session_Id: uuidv4(),
+              user: { connect: { id: req.userId } },
+            },
+          });
+          console.log();
+          req.sessionId = sessionCreate.session_Id;
+          next();
+        }
+        if(req.method == 'GET'){
+          next()
+        }
       }
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return responseError(res, error);
   } finally {
     await prisma.$disconnect();

@@ -10,6 +10,9 @@ const prisma = new PrismaClient();
 
 export const getAllCartItem = async (req: Authenticate, res: Response) => {
   try {
+    if(req.sessionId ==null){
+        throw new CustomError('Session is not created', 'Cart is empty ',404)
+    }
     const getSessionId = await prisma.session.findFirst({
       where: {
         userId: req.userId,
@@ -38,6 +41,11 @@ export const getAllCartItem = async (req: Authenticate, res: Response) => {
             404
           );
     }
+    let total =0 
+    getSessionId.cart.map((info)=>{
+        total = total + info.pId.discounted_price*info.qty
+    })
+    getSessionId['total_price'] = total
     responseSuccess(res,new CustomSuccess('Data fetch successfully', getSessionId, 200))
   } catch (err) {
     responseError(res,err)
