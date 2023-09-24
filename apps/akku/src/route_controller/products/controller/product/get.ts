@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { responseSuccess } from 'apps/akku/src/utils/responseSuccess';
+import { CustomSuccess } from 'apps/akku/src/utils/succes';
 
 const prisma = new PrismaClient();
 
@@ -31,7 +33,29 @@ export async function getProducts(req: Request, res: Response) {
       skip: skip,
     });
 
-    return res.json(products);
+    // console.log(products)
+
+    
+    products.forEach(item => {
+      if (item.image) {
+        
+        item['imageArray'] = [
+          `https://akkukachasma.com/uploads/product_images/${item.image}`
+        ];
+      } else if (item.product_images) {
+   
+        const imageArray = item.product_images.split(',').map(image => {
+          const trimmedImage = image.trim();
+          return `https://akkukachasma.com/uploads/product_images/${trimmedImage}`;
+        });
+        item['imageArray'] = imageArray;
+        delete item.product_images; // Remove the product_images property
+      }
+      delete item.image; 
+    });
+    
+    responseSuccess(res, new CustomSuccess('Data fetched succesfully', products , 200))
+    
   } catch (error) {
     console.error('Error fetching products:', error);
     return res.status(500).json({ error: 'Error fetching products' });
