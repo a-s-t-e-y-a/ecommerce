@@ -9,7 +9,7 @@ import { verifyToken } from 'apps/akku/src/middleware/auth';
 const routerProduct = express.Router();
 
 routerProduct.post('/',verifyToken, createProduct );
-routerProduct.get('/',verifyToken,getProducts)
+routerProduct.get('/',getProducts)
 routerProduct.get('/:id',getProductById);
 routerProduct.put('/:id', updateProduct);
 routerProduct.delete('/:id',deleteProduct );
