@@ -40,13 +40,13 @@ export async function getProducts(req: Request, res: Response) {
       if (item.image) {
         
         item['imageArray'] = [
-          `https://akkukachasma.com/uploads/product_images/${item.image}`
+          `https://akku-bucket.s3.ap-south-1.amazonaws.com/product_images/${item.image}`
         ];
       } else if (item.product_images) {
    
         const imageArray = item.product_images.split(',').map(image => {
           const trimmedImage = image.trim();
-          return `https://akkukachasma.com/uploads/product_images/${trimmedImage}`;
+          return `https://akku-bucket.s3.ap-south-1.amazonaws.com/product_images/${trimmedImage}`;
         });
         item['imageArray'] = imageArray;
         delete item.product_images; // Remove the product_images property
