@@ -16,6 +16,7 @@ export async function sessionCheck(
   // console.log(req)
   try {
     await prisma.$transaction(async (tx) => {
+      console.log(req.userId)
       const sessionFind = await prisma.session.findFirst({
         where: {
           userId: req.userId,

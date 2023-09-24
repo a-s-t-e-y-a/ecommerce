@@ -32,6 +32,7 @@ export async function verifyToken(
         );
       }
       req.userId = decoded.find.id;
+      console.log(decoded.find.id)
       next();
     });
   } catch (err) {

@@ -16,12 +16,12 @@ export const getAllCartItem = async (req: Authenticate, res: Response) => {
     const getSessionId = await prisma.session.findFirst({
       where: {
         userId: req.userId,
-        session_Id:req.sessionId
+        // session_Id:req.sessionId
       },
       include: {
         cart: {
           include: {
-            pId: true,
+            productId: true,
           },
         },
       },
@@ -34,16 +34,16 @@ export const getAllCartItem = async (req: Authenticate, res: Response) => {
         404
       );
     }
-    if(getSessionId.cart.length ==0 ){
-        throw new CustomError(
-            'Dont have any item in cart',
-            'Cant fetch data',
-            404
-          );
-    }
+    // if(getSessionId.cart.length ==0 ){
+    //     throw new CustomError(
+    //         'Dont have any item in cart',
+    //         'Cant fetch data',
+    //         404
+    //       );
+    // }
     let total =0 
     getSessionId.cart.map((info)=>{
-        total = total + info.pId.discounted_price*info.qty
+        total = total + info.productId.discounted_price*info.qty_frame
     })
     getSessionId['total_price'] = total
     responseSuccess(res,new CustomSuccess('Data fetch successfully', getSessionId, 200))

@@ -149,17 +149,21 @@ model lenses {
 
 model cartItem {
   id         Int       @id @default(autoincrement())
-  pId        products? @relation(fields: [p_id], references: [products_id])
-  p_id       Int?      @unique
-  price      String
-  qty        Int       @default(1)
+  // pId        products? @relation(fields: [p_id], references: [products_id])
+  // p_id       Int? 
+  productId  products? @relation(fields: [p_id], references: [products_id])
+  p_id       Int?
+  price      String?
+  qty_frame  Int       @default(0)
   date       DateTime  @default(now()) @updatedAt
   user_ip    String
   l_id       Int?
   lId        lenses?   @relation(fields: [l_id], references: [id])
+  lensePrice String?
+  qty_lenses Int       @default(0)
   user       user?     @relation(fields: [user_id], references: [id])
   user_id    Int?      @unique
-  sessionId  session   @relation(fields: [session_id], references: [session_Id] ,onDelete: Cascade)
+  sessionId  session   @relation(fields: [session_id], references: [session_Id], onDelete: Cascade)
   session_id String
 }
 
