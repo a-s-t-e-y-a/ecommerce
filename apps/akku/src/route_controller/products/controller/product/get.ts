@@ -16,48 +16,68 @@ export async function getProductById(req: Request, res: Response) {
     }
     return res.json(product);
   } catch (error) {
-    console.error('Error fetching product:', error);
     return res.status(500).json({ error: 'Error fetching product' });
   }
 }
 
 export async function getProducts(req: Request, res: Response) {
   try {
-    const page = parseInt(req.query.page as string) || 1; 
-    const itemsPerPage = parseInt(req.query.itemsPerPage as string) || 4; 
+    const page = Number(req.query.page) || 1;
+    const itemsPerPage: number = Number(req.query.itemsPerPage) || 20;
+    const productCategoriesId = Number(req.query.productCategoriesId);
+    const productBrand = Number(req.query.productBrand);
+    const shape = req.query.shape;
+    const style = req.query.style;
+    const productColor = req.query.product_color;
 
-    const skip = (page - 1) * itemsPerPage;
+    const skip: number = (page - 1) * itemsPerPage;
+
+    const where = {};
+   
+    if (productCategoriesId) {
+      where['productCategoriesId'] = productCategoriesId;
+    }
+
+    if (productBrand) {
+      where['productBrandId'] = productBrand;
+    }
+
+    if (shape) {
+      where['shape'] = shape;
+    }
+
+    if (style) {
+      where['style'] = style;
+    }
+
+    if (productColor) {
+      where['product_color'] = productColor;
+    }
 
     const products = await prisma.products.findMany({
+      where,
       take: itemsPerPage,
       skip: skip,
     });
 
-    // console.log(products)
-
-    
-    products.forEach(item => {
+    products.forEach((item) => {
       if (item.image) {
-        
         item['imageArray'] = [
-          `https://akku-bucket.s3.ap-south-1.amazonaws.com/product_images/${item.image}`
+          `https://akku-bucket.s3.ap-south-1.amazonaws.com/product_images/${item.image}`,
         ];
       } else if (item.product_images) {
-   
-        const imageArray = item.product_images.split(',').map(image => {
+        const imageArray = item.product_images.split(',').map((image) => {
           const trimmedImage = image.trim();
           return `https://akku-bucket.s3.ap-south-1.amazonaws.com/product_images/${trimmedImage}`;
         });
         item['imageArray'] = imageArray;
-        delete item.product_images; // Remove the product_images property
+        delete item.product_images; 
       }
-      delete item.image; 
+      delete item.image;
     });
-    
-    responseSuccess(res, new CustomSuccess('Data fetched succesfully', products , 200))
-    
+
+   responseSuccess(res, new CustomSuccess('Data fetched successfully', products, 200))
   } catch (error) {
-    console.error('Error fetching products:', error);
     return res.status(500).json({ error: 'Error fetching products' });
   }
 }
