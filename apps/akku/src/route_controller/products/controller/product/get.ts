@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { responseSuccess } from 'apps/akku/src/utils/responseSuccess';
 import { CustomSuccess } from 'apps/akku/src/utils/succes';
+import { responseError } from 'apps/akku/src/utils/responseError';
 
 const prisma = new PrismaClient();
 
@@ -56,9 +57,13 @@ export async function getProducts(req: Request, res: Response) {
 
     const products = await prisma.products.findMany({
       where,
-      take: itemsPerPage,
+      orderBy: {
+        created_on: 'desc', // Replace with the actual date field name
+      },
+      take: itemsPerPage, // Limit the result to one item
       skip: skip,
     });
+    
 
     products.forEach((item) => {
       if (item.image) {
@@ -76,8 +81,12 @@ export async function getProducts(req: Request, res: Response) {
       delete item.image;
     });
 
-   responseSuccess(res, new CustomSuccess('Data fetched successfully', products, 200))
+    // Reverse the products array
+    const reversedProducts = products.reverse();
+
+    responseSuccess(res, new CustomSuccess('Data fetched successfully', reversedProducts, 200))
   } catch (error) {
-    return res.status(500).json({ error: 'Error fetching products' });
+    console.log(error)
+    responseError(res, error)
   }
 }

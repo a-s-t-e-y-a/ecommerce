@@ -28,7 +28,6 @@ export async function loginPost(req: Request, res: Response) {
     });
     responseSuccess(res, new CustomSuccess('Logged successfully',find, 200))
   } catch (err) {
-    console.error(err);
     responseError(res, err);
   }
 }

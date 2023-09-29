@@ -10,7 +10,6 @@ export async function createProduct(req: Request, res: Response) {
     });
     return res.status(201).json(product);
   } catch (error) {
-    console.error('Error creating product:', error);
     return res.status(500).json({ error: 'Error creating product' });
   }
 }

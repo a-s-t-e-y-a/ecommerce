@@ -24,7 +24,7 @@ model admin {
   name       String
   email      String   @unique
   password   String?
-  updated_on DateTime
+  updated_on DateTime @default(now())
 }
 
 model user {
