@@ -19,6 +19,7 @@ interface CreateCartItemRequest {
 
 export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
+    console.log('id',req.userId)
     const {p_id, l_id }: CreateCartItemRequest = req.body;
     if (!p_id && !l_id) {
       throw new CustomError('Please add any product', 'Bad Request', 404);
