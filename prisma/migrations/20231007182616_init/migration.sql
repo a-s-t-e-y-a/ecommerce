@@ -16,7 +16,7 @@ CREATE TABLE `admin` (
     `name` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NULL,
-    `updated_on` DATETIME(3) NOT NULL,
+    `updated_on` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `admin_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -141,70 +141,10 @@ CREATE TABLE `cartItem` (
     `price` VARCHAR(191) NULL,
     `qty_frame` INTEGER NOT NULL DEFAULT 0,
     `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `user_ip` VARCHAR(191) NOT NULL,
     `l_id` INTEGER NULL,
-    `lensePrice` INTEGER NULL,
+    `lensePrice` VARCHAR(191) NULL,
     `qty_lenses` INTEGER NOT NULL DEFAULT 0,
-    `user_id` INTEGER NULL,
-    `session_id` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `cartItem_user_id_key`(`user_id`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `Coupon_code` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `coupon_code` VARCHAR(191) NOT NULL,
-    `discount` VARCHAR(191) NOT NULL,
-    `minimuim_condition` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `session` (
-    `total` INTEGER NOT NULL DEFAULT 0,
-    `session_Id` VARCHAR(191) NOT NULL,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `userId` INTEGER NOT NULL,
-    `couponCodeId` INTEGER NULL,
-
-    UNIQUE INDEX `session_userId_key`(`userId`),
-    PRIMARY KEY (`session_Id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `orderItem` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `p_id` INTEGER NULL,
-    `date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `user_ip` VARCHAR(191) NOT NULL,
-    `l_id` INTEGER NULL,
-    `user_id` INTEGER NULL,
-    `sessionId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `orderItem_user_id_key`(`user_id`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `orderDetails` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `user_id` INTEGER NULL,
-    `total` INTEGER NOT NULL,
-    `paymentId` INTEGER NOT NULL,
-
-    UNIQUE INDEX `orderDetails_user_id_key`(`user_id`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `paymentDeatils` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `amount` INTEGER NOT NULL,
-    `provider` VARCHAR(191) NOT NULL,
-    `status` VARCHAR(191) NOT NULL,
+    `user_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -231,28 +171,4 @@ ALTER TABLE `cartItem` ADD CONSTRAINT `cartItem_p_id_fkey` FOREIGN KEY (`p_id`) 
 ALTER TABLE `cartItem` ADD CONSTRAINT `cartItem_l_id_fkey` FOREIGN KEY (`l_id`) REFERENCES `lenses`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `cartItem` ADD CONSTRAINT `cartItem_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `cartItem` ADD CONSTRAINT `cartItem_session_id_fkey` FOREIGN KEY (`session_id`) REFERENCES `session`(`session_Id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `session` ADD CONSTRAINT `session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `session` ADD CONSTRAINT `session_couponCodeId_fkey` FOREIGN KEY (`couponCodeId`) REFERENCES `Coupon_code`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `orderItem` ADD CONSTRAINT `orderItem_p_id_fkey` FOREIGN KEY (`p_id`) REFERENCES `products`(`products_id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `orderItem` ADD CONSTRAINT `orderItem_l_id_fkey` FOREIGN KEY (`l_id`) REFERENCES `lenses`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `orderItem` ADD CONSTRAINT `orderItem_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `orderDetails` ADD CONSTRAINT `orderDetails_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `orderDetails` ADD CONSTRAINT `orderDetails_paymentId_fkey` FOREIGN KEY (`paymentId`) REFERENCES `paymentDeatils`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `cartItem` ADD CONSTRAINT `cartItem_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

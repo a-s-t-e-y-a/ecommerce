@@ -9,7 +9,8 @@ const prisma = new PrismaClient();
 
 export const categoryGetAll = async (req: Request, res: Response) => {
     try {
-      const categories = await prisma.product_categories.findMany();
+      const categories = await prisma.product_categories.findMany({
+      });
       responseSuccess(
         res,
         new CustomSuccess('Fetched all categories successfully', categories, 200)
@@ -24,6 +25,9 @@ export const categoryGetAll = async (req: Request, res: Response) => {
       const categoryId = parseInt(req.params.id);
       const category = await prisma.product_categories.findUnique({
         where: { products_categories_id: categoryId },
+        include :{
+          products:true
+        }
       });
       if (!category) {
         throw new CustomError('Category not found', 'Bad request', 404)

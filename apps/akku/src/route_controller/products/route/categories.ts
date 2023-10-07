@@ -13,6 +13,6 @@ categories.post('/',verifyToken, categoryCreate );
 categories.get('/',categoryGetAll)
 categories.get('/:id',categoryGetById);
 categories.put('/:id', categoryUpdate);
-categories.delete('/:id',categoryDelete );
+// categories.delete('/:id',categoryDelete );
 
 export default categories;

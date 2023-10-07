@@ -38,10 +38,7 @@ model user {
   updated_on   String?
   address      String
   status       Int
-  Cart         cartItem?
-  session      session?
-  orderItem    orderItem?
-  orderDetails orderDetails?
+  Cart         cartItem[]
 }
 
 model products {
@@ -86,7 +83,6 @@ model products {
   productCategories       product_categories @relation(fields: [productCategoriesId], references: [products_categories_id])
   productCategoriesId     Int
   Cart                    cartItem[]
-  orderItem               orderItem[]
 }
 
 model product_brands {
@@ -138,81 +134,54 @@ model lenses {
   created_at                        String
   updated_at                        String?
   lenses                            cartItem[]
-  orderItem                         orderItem[]
 }
 
-// model size {
-//    id         Int       @id @default(autoincrement())
-//    name String
-//    cartItem cartItem[]
-// }
+
 
 model cartItem {
   id         Int       @id @default(autoincrement())
-  // pId        products? @relation(fields: [p_id], references: [products_id])
-  // p_id       Int? 
   productId  products? @relation(fields: [p_id], references: [products_id])
   p_id       Int?
   price      String?
   qty_frame  Int       @default(0)
   date       DateTime  @default(now()) @updatedAt
-  user_ip    String
   l_id       Int?
   lId        lenses?   @relation(fields: [l_id], references: [id])
   lensePrice String?
   qty_lenses Int       @default(0)
   user       user?     @relation(fields: [user_id], references: [id])
-  user_id    Int?      @unique
-  sessionId  session   @relation(fields: [session_id], references: [session_Id], onDelete: Cascade)
-  session_id String
+  user_id    Int?     
 }
 
-model Coupon_code {
-  id                 Int       @id @default(autoincrement())
-  coupon_code        String
-  discount           String
-  minimuim_condition Int
-  session            session[]
-}
 
-model session {
-  // id           Int           @default(autoincrement())
-  total        Int          @default(0)
-  session_Id   String       @id
-  created_at   DateTime     @default(now())
-  user         user         @relation(fields: [userId], references: [id])
-  userId       Int          @unique
-  couponCode   Coupon_code? @relation(fields: [couponCodeId], references: [id])
-  couponCodeId Int?
-  cart         cartItem[]
-}
 
-model orderItem {
-  id        Int       @id @default(autoincrement())
-  pId       products? @relation(fields: [p_id], references: [products_id])
-  p_id      Int?
-  date      DateTime  @default(now()) @updatedAt
-  user_ip   String
-  l_id      Int?
-  lId       lenses?   @relation(fields: [l_id], references: [id])
-  user      user?     @relation(fields: [user_id], references: [id])
-  user_id   Int?      @unique
-  sessionId Int
-}
 
-model orderDetails {
-  id             Int            @id @default(autoincrement())
-  user           user?          @relation(fields: [user_id], references: [id])
-  user_id        Int?           @unique
-  total          Int
-  paymentDeatils paymentDeatils @relation(fields: [paymentId], references: [id])
-  paymentId      Int
-}
+// model orderItem {
+//   id        Int       @id @default(autoincrement())
+//   pId       products? @relation(fields: [p_id], references: [products_id])
+//   p_id      Int?
+//   date      DateTime  @default(now()) @updatedAt
+//   user_ip   String
+//   l_id      Int?
+//   lId       lenses?   @relation(fields: [l_id], references: [id])
+//   user      user?     @relation(fields: [user_id], references: [id])
+//   user_id   Int?      @unique
+//   sessionId Int
+// }
 
-model paymentDeatils {
-  id           Int            @id @default(autoincrement())
-  orderdetails orderDetails[]
-  amount       Int
-  provider     String
-  status       String
-}
+// model orderDetails {
+//   id             Int            @id @default(autoincrement())
+//   user           user?          @relation(fields: [user_id], references: [id])
+//   user_id        Int?           @unique
+//   total          Int
+//   paymentDeatils paymentDeatils @relation(fields: [paymentId], references: [id])
+//   paymentId      Int
+// }
+
+// model paymentDeatils {
+//   id           Int            @id @default(autoincrement())
+//   orderdetails orderDetails[]
+//   amount       Int
+//   provider     String
+//   status       String
+// }

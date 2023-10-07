@@ -10,13 +10,14 @@ export const categoryDelete = async (req: Request, res: Response) => {
     try {
       const categoryId = parseInt(req.params.id);
       const deletedCategory = await prisma.product_categories.delete({
-        where: { products_categories_id: categoryId },
+        where: { products_categories_id: Number(categoryId) },
       });
       responseSuccess(
         res,
         new CustomSuccess('Category deleted successfully', deletedCategory, 200)
       );
     } catch (err) {
+      console.log(err)
       responseError(res, err);
     }
   };

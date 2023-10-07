@@ -8,16 +8,17 @@ import { Authenticate } from 'apps/akku/src/interfaces/reqInterface';
 
 const prisma = new PrismaClient();
 
-export const getAllCartItem = async (req: Authenticate, res: Response) => {
+export const deleteCartItem = async (req: Authenticate, res: Response) => {
   try {
-  const cart = await prisma.cartItem.findMany({
-    where:{
-        user_id:req.userId
-    }
-  })
-  responseSuccess(
+    const id: string = req.params.id;
+    const cartDelete = await prisma.cartItem.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    responseSuccess(
       res,
-      new CustomSuccess('Data fetch successfully', cart, 200)
+      new CustomSuccess('Data fetch successfully', cartDelete, 200)
     );
   } catch (err) {
     responseError(res, err);
