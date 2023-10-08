@@ -13,23 +13,23 @@ export async function verifyToken(
   next: NextFunction
 ) {
   try {
-    if (req.cookies.jwt == undefined) {
-      throw new CustomError(
-        'Please login first',
-        'Unauthorized error',
-        401
-      );
-    }
- 
-    const token = req.cookies.jwt;
+    let token;
 
-    jwt.verify(token, 'BEARER', (err, decoded) => {
+    // Check if the token is present in the cookies
+    if (req.cookies.jwt) {
+      token = req.cookies.jwt;
+    } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      // Check if the token is present in the headers as "Bearer <token>"
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    if (!token) {
+      throw new CustomError('Please provide a token', 'Unauthorized error', 401);
+    }
+
+    jwt.verify(token, 'YOUR_SECRET_KEY', (err, decoded) => {
       if (err) {
-        throw new CustomError(
-          'Token verification failed',
-          'Unauthorized error',
-          401
-        );
+        throw new CustomError('Token verification failed', 'Unauthorized error', 401);
       }
       req.userId = decoded.find.id;
       next();
