@@ -26,7 +26,7 @@ export async function loginPost(req: Request, res: Response) {
     res.cookie('jwt', signedInfo, {
       httpOnly: true,
     });
-    responseSuccess(res, new CustomSuccess('Logged successfully',signedInfo, 200))
+    responseSuccess(res, new CustomSuccess('Logged successfully',{token:signedInfo}, 200))
   } catch (err) {
     responseError(res, err);
   }
