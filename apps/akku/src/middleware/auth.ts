@@ -19,15 +19,16 @@ export async function verifyToken(
     if (req.cookies.jwt) {
       token = req.cookies.jwt;
     } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-      // Check if the token is present in the headers as "Bearer <token>"
+    
       token = req.headers.authorization.split(' ')[1];
+      console.log(token)
     }
 
     if (!token) {
       throw new CustomError('Please provide a token', 'Unauthorized error', 401);
     }
 
-    jwt.verify(token, 'YOUR_SECRET_KEY', (err, decoded) => {
+    jwt.verify(token, 'BEARER', (err, decoded) => {
       if (err) {
         throw new CustomError('Token verification failed', 'Unauthorized error', 401);
       }

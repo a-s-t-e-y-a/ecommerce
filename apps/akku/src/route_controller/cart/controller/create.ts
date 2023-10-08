@@ -1,4 +1,4 @@
-import {  Response } from 'express';
+import { Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { CustomError } from 'apps/akku/src/utils/errorThrow';
 import { responseError } from 'apps/akku/src/utils/responseError';
@@ -19,8 +19,7 @@ interface CreateCartItemRequest {
 
 export const createCartItem = async (req: Authenticate, res: Response) => {
   try {
-    console.log('id',req.userId)
-    const {p_id, l_id }: CreateCartItemRequest = req.body;
+    const { p_id, l_id }: CreateCartItemRequest = req.body;
     if (!p_id && !l_id) {
       throw new CustomError('Please add any product', 'Bad Request', 404);
     }
@@ -119,8 +118,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
           res,
           new CustomSuccess('product added to cart', createNew, 200)
         );
-      }
-      else if (l_id) {
+      } else if (l_id) {
         const createNew = await prisma.cartItem.create({
           data: {
             // productId:{ connect: { products_id: p_id } } ,
@@ -155,7 +153,6 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
       }
     }
   } catch (error) {
-    console.log(error)
     responseError(res, error);
   }
 };
