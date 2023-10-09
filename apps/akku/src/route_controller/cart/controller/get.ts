@@ -10,12 +10,15 @@ const prisma = new PrismaClient();
 
 export const getAllCartItem = async (req: Authenticate, res: Response) => {
   try {
-  const cart = await prisma.cartItem.findMany({
-    where:{
-        user_id:req.userId
-    }
-  })
-  responseSuccess(
+    const cart = await prisma.cartItem.findMany({
+      where: {
+        user_id: req.userId,
+      },
+      include: {
+        productId: true,
+      },
+    });
+    responseSuccess(
       res,
       new CustomSuccess('Data fetch successfully', cart, 200)
     );
