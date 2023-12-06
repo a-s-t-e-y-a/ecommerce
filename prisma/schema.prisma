@@ -19,26 +19,20 @@ model about {
   created_on  String
 }
 
-model admin {
-  id         Int      @id @default(autoincrement())
-  name       String
-  email      String   @unique
-  password   String?
-  updated_on DateTime @default(now())
-}
-
 model user {
   id           Int           @id @default(autoincrement())
   name         String
   email        String        @unique
   password     String
-  mobile       String
+  mobile       String?
   alter_mobile String?
   created_on   DateTime
   updated_on   String?
   address      String
-  status       Int
+  status       Int?
+  role         String
   Cart         cartItem[]
+  gender String?
 }
 
 model products {
@@ -150,7 +144,7 @@ model cartItem {
   lensePrice String?
   qty_lenses Int       @default(0)
   user       user?     @relation(fields: [user_id], references: [id])
-  user_id    Int?     
+  user_id    Int?
 }
 
 
@@ -185,3 +179,5 @@ model cartItem {
 //   provider     String
 //   status       String
 // }
+
+

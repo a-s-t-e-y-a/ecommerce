@@ -9,4 +9,5 @@ export interface User {
     updated_on?: string | null;
     address: string;
     status: number;
+    role:string
 }
