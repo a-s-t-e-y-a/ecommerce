@@ -15,7 +15,7 @@ export const getAllCartItem = async (req: Authenticate, res: Response) => {
         user_id: req.userId,
       },
       include: {
-        productId: true,
+        product_Id: true,
       },
     });
     responseSuccess(

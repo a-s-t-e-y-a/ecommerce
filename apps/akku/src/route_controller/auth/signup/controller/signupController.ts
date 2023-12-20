@@ -41,7 +41,7 @@ export const signup = async (req: Authenticate, res: Response) => {
         alter_mobile,
         address,
         status,
-        role:'coustmer',
+        // role:'coustmer',
         created_on: new Date(),
       },
     });

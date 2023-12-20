@@ -7,7 +7,7 @@ export async function updateProduct(req: Request, res: Response) {
   const productId = parseInt(req.params.id, 10);
   try {
     const updatedProduct = await prisma.products.update({
-      where: { products_id: productId },
+      where: { p_id: productId },
       data: req.body,
     });
     return res.json(updatedProduct);

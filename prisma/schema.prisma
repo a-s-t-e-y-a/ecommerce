@@ -30,13 +30,11 @@ model user {
   updated_on   String?
   address      String
   status       Int?
-  role         String
   Cart         cartItem[]
-  gender String?
 }
 
 model products {
-  products_id             Int                @id @default(autoincrement())
+  p_id            Int                @id @default(autoincrement())
   product_model_name      String?
   product_model_number    String?
   product_color           String?
@@ -134,8 +132,8 @@ model lenses {
 
 model cartItem {
   id         Int       @id @default(autoincrement())
-  productId  products? @relation(fields: [p_id], references: [products_id])
-  p_id       Int?
+  product_Id  products? @relation(fields: [productId], references: [p_id])
+  productId       Int?
   price      String?
   qty_frame  Int       @default(0)
   date       DateTime  @default(now()) @updatedAt

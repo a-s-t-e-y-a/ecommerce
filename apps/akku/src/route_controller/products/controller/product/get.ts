@@ -10,7 +10,7 @@ export async function getProductById(req: Request, res: Response) {
   const productId = parseInt(req.params.id, 10);
   try {
     const product = await prisma.products.findUnique({
-      where: { products_id: productId },
+      where: { p_id: productId },
     });
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
@@ -34,7 +34,7 @@ export async function getProducts(req: Request, res: Response) {
     const skip: number = (page - 1) * itemsPerPage;
 
     const where = {};
-   
+
     if (productCategoriesId) {
       where['productCategoriesId'] = productCategoriesId;
     }
@@ -63,7 +63,7 @@ export async function getProducts(req: Request, res: Response) {
       take: itemsPerPage, // Limit the result to one item
       skip: skip,
     });
-    
+
 
     products.forEach((item) => {
       if (item.image) {
@@ -76,7 +76,7 @@ export async function getProducts(req: Request, res: Response) {
           return `https://akku-bucket.s3.ap-south-1.amazonaws.com/product_images/${trimmedImage}`;
         });
         item['imageArray'] = imageArray;
-        delete item.product_images; 
+        delete item.product_images;
       }
       delete item.image;
     });

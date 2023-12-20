@@ -32,8 +32,8 @@ export const createAdmin = async(res: Response , req : Authenticate)=>{
         name : first_name+' '+ last_name,
         address,
         email,
-        gender,
-        role:'admin',
+        // gender,
+        // role:'admin',
         password,
         created_on : new Date()
       }

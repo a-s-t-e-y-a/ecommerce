@@ -11,7 +11,6 @@ const prisma = new PrismaClient();
 interface CreateCartItemRequest {
   p_id: number;
   qty: number;
-  user_ip: string;
   l_id?: number | null;
   l_price?: number | null;
   user_id: number;
@@ -27,7 +26,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
     if (p_id) {
       product = await prisma.products.findUnique({
         where: {
-          products_id: Number(p_id),
+          p_id: Number(p_id),
         },
       });
       if (!product) {
@@ -50,7 +49,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
     if (p_id) {
       findProduct = await prisma.cartItem.findMany({
         where: {
-          p_id: Number(p_id),
+          productId: Number(p_id),
           user_id: req.userId,
         },
       });
@@ -67,7 +66,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
       if (p_id) {
         const updateCart = await prisma.cartItem.updateMany({
           where: {
-            p_id: Number(p_id),
+             productId: Number(p_id),
             user_id: req.userId,
           },
           data: {
@@ -106,7 +105,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
       if (p_id) {
         const createNew = await prisma.cartItem.create({
           data: {
-            productId: { connect: { products_id: Number(p_id) } },
+          product_Id: { connect: { p_id: Number(p_id) } },
             price: p_id ? product.product_price : null,
             qty_frame: p_id ? 1 : 0,
             user: { connect: { id: req.userId } },
@@ -137,7 +136,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
       } else {
         const createNew = await prisma.cartItem.create({
           data: {
-            productId: { connect: { products_id: Number(p_id) } },
+            product_Id: { connect: { p_id: Number(p_id) } },
             price: p_id ? product.product_price : null,
             qty_frame: p_id ? 1 : 0,
             user: { connect: { id: req.userId } },
@@ -153,6 +152,7 @@ export const createCartItem = async (req: Authenticate, res: Response) => {
       }
     }
   } catch (error) {
+    console.log(error)
     responseError(res, error);
   }
 };

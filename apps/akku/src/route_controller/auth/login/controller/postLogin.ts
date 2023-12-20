@@ -31,6 +31,7 @@ export async function loginPost(req: Request, res: Response) {
       new CustomSuccess('Logged successfully', { token: signedInfo,info_user:find }, 200)
     );
   } catch (err) {
+    console.log(err)
     responseError(res, err);
   }
 }
