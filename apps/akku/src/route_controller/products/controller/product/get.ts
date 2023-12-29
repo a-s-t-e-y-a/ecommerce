@@ -68,12 +68,12 @@ export async function getProducts(req: Request, res: Response) {
     products.forEach((item) => {
       if (item.image) {
         item['imageArray'] = [
-          `https://akkukachasma.s3.amazonaws.com/product_images/product_images/${item.image}`,
+          `https://akkukachasma.s3.amazonaws.com/product_images/${item.image}`,
         ];
       } else if (item.product_images) {
         const imageArray = item.product_images.split(',').map((image) => {
           const trimmedImage = image.trim();
-          return `https://akkukachasma.s3.amazonaws.com/product_images/product_images/${trimmedImage}`;
+          return `https://akkukachasma.s3.amazonaws.com/product_images/${trimmedImage}`;
         });
         item['imageArray'] = imageArray;
         delete item.product_images;
