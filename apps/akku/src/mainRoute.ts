@@ -6,6 +6,7 @@ import cartRoute from "./route_controller/cart/cartRoute";
 import brand from "./route_controller/products/route/brand";
 import categories from "./route_controller/products/route/categories";
 import adminRouter from "./route_controller/admin/auth/route";
+import routeFilter from "./route_controller/filter/filter.route";
 const mainRouter = express.Router()
 
 mainRouter.use('/products',routerProduct)
@@ -14,4 +15,5 @@ mainRouter.use('/categories', categories)
 mainRouter.use('/auth',authRouter)
 mainRouter.use('/cart',cartRoute)
 mainRouter.use('/admin', adminRouter)
+mainRouter.use('/filter', routeFilter)
 export default mainRouter;

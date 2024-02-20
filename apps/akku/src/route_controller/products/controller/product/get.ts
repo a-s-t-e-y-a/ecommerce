@@ -43,10 +43,6 @@ export async function getProducts(req: Request, res: Response) {
       where['productBrandId'] = productBrand;
     }
 
-    if (shape) {
-      where['shape'] = shape;
-    }
-
     if (style) {
       where['style'] = style;
     }
@@ -55,14 +51,22 @@ export async function getProducts(req: Request, res: Response) {
       where['product_color'] = productColor;
     }
 
-    const products = await prisma.products.findMany({
-      where,
-      orderBy: {
-        created_on: 'desc', // Replace with the actual date field name
-      },
-      take: itemsPerPage, // Limit the result to one item
-      skip: skip,
-    });
+  if (shape) {
+      where['shape']= shape
+    }
+  const products = await prisma.products.findMany({
+  // where,
+  where,
+  orderBy: {
+    p_id: 'desc', // Replace with the actual date field name
+  },
+  take: itemsPerPage, // Limit the result to one item
+  skip: skip,
+  include: {
+    shape_: true}
+});
+
+
 
 
     products.forEach((item) => {
