@@ -37,12 +37,15 @@ model products {
   p_id            Int                @id @default(autoincrement())
   product_model_name      String?
   product_model_number    String?
+  product_color_          frame_color?  @relation(fields:[product_color], references:[id])
   product_color           Int?
   capacity                String?
   use_for                 String?
   lens_matrial            String?
-  shape                   String?
-  style                   String?
+  shape_                  Product_shape?     @relation(fields:[shape], references:[id])
+  shape                   Int?
+  style_                  style?  @relation(fields:[style], references:[id])
+  style                   Int?
   dimensions              String?
   country_of_origin       String?
   row_metrial_source_from String?
@@ -76,6 +79,23 @@ model products {
   productCategoriesId     Int
   Cart                    cartItem[]
 }
+model Product_shape {
+  id          Int @id @default(autoincrement())
+  name        String
+  image       String
+  product     products[]
+}
+ model frame_color {
+   id Int @id @default(autoincrement())
+   name String
+   product products[]
+ }
+  model style {
+    id        Int @id @default(autoincrement())
+    name      String
+    url       String
+    product   products[]
+  }
 
 model product_brands {
   products_brand_id      Int                @id @default(autoincrement())
