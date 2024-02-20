@@ -17,6 +17,7 @@ export async function getProductById(req: Request, res: Response) {
     }
     return res.json(product);
   } catch (error) {
+    console.log(error)
     return res.status(500).json({ error: 'Error fetching product' });
   }
 }

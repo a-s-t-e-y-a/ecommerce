@@ -37,7 +37,7 @@ model products {
   p_id            Int                @id @default(autoincrement())
   product_model_name      String?
   product_model_number    String?
-  product_color           String?
+  product_color           Int?
   capacity                String?
   use_for                 String?
   lens_matrial            String?
