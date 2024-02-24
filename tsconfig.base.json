@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
-    "allowImportingTsExtensions": true,
+    // "allowImportingTsExtensions": true,
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

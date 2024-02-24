@@ -1,3 +1,3 @@
-import app from '../apps/akku/src/main.ts'
+import app from '../apps/akku/src/main'
 
 export default app
