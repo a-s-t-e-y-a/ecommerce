@@ -28,9 +28,10 @@ export async function getProducts(req: Request, res: Response) {
     const itemsPerPage: number = Number(req.query.itemsPerPage) || 20;
     const productCategoriesId = Number(req.query.productCategoriesId);
     const productBrand = Number(req.query.productBrand);
-    const shape = req.query.shape;
-    const style = req.query.style;
-    const productColor = req.query.product_color;
+    const shape = Number(req.query.shape);
+    const style = Number(req.query.style);
+    const productColor = Number(req.query.product_color);
+    const size = Number(req.query.size)
 
     const skip: number = (page - 1) * itemsPerPage;
 
@@ -52,39 +53,41 @@ export async function getProducts(req: Request, res: Response) {
       where['product_color'] = productColor;
     }
 
-  if (shape) {
-      where['shape']= shape
+    if (shape) {
+      where['shape'] = shape;
     }
-  const products = await prisma.products.findMany({
-  // where,
-  where,
-  orderBy: {
-    p_id: 'desc', // Replace with the actual date field name
-  },
-  take: itemsPerPage, // Limit the result to one item
-  skip: skip,
-  include: {
-    shape_: true}
-});
-
-
-
+    if(size){
+      where['size']= size;
+    }
+    const products = await prisma.products.findMany({
+      where,
+      orderBy: {
+        p_id: 'desc', // Replace with the actual date field name
+      },
+      take: itemsPerPage,
+      skip: skip,
+      include: {
+        shape_: true,
+        product_color_:true,
+        style_:true,
+        size_:true
+      },
+    });
 
     products.forEach((item) => {
-
-        const imageArray = item.product_images.split(',').map((image) => {
-          return `https://akkukachasma.s3.amazonaws.com/product_images/${image}`;
-        });
-        item['imageArray'] = imageArray;
-
+      const imageArray = item.product_images.split(',').map((image) => {
+        return `https://akkukachasma.s3.amazonaws.com/product_images/${image}`;
+      });
+      item['imageArray'] = imageArray;
     });
 
     // Reverse the products array
     const reversedProducts = products.reverse();
 
-    responseSuccess(res, new CustomSuccess('Data fetched successfully', reversedProducts, 200))
+    responseSuccess(res, new CustomSuccess('Data fetched successfully', reversedProducts, 200));
   } catch (error) {
-    console.log(error)
-    responseError(res, error)
+    console.log(error);
+    responseError(res, error); // Assuming responseError is a function to handle error responses
   }
 }
+

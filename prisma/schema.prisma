@@ -58,9 +58,10 @@ model products {
   product_images          String?
   image                   String?
   offer                   String?
-  glasses_size            String?
+  size_                   Size? @relation(fields:[size], references:[id])
+  size                        Int?
   bought                  String?
-  rating                  Int?
+  // rating                  Int?
   frame_width             String?
   temple_length           String?
   lens_height             String?
@@ -78,6 +79,11 @@ model products {
   productCategories       product_categories @relation(fields: [productCategoriesId], references: [products_categories_id])
   productCategoriesId     Int
   Cart                    cartItem[]
+}
+model Size {
+   id          Int @id @default(autoincrement())
+  name        String
+  product     products[]
 }
 model Product_shape {
   id          Int @id @default(autoincrement())
@@ -163,6 +169,19 @@ model cartItem {
   qty_lenses Int       @default(0)
   user       user?     @relation(fields: [user_id], references: [id])
   user_id    Int?
+}
+
+model Contact {
+  id          Int       @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  email       String
+  phoneNo     String
+  address     String
+  city        String
+  state       String
+  zipCode     String
+  country     String
 }
 
 

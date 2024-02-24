@@ -7,6 +7,7 @@ import brand from "./route_controller/products/route/brand";
 import categories from "./route_controller/products/route/categories";
 import adminRouter from "./route_controller/admin/auth/route";
 import routeFilter from "./route_controller/filter/filter.route";
+import lenseRouter from "./route_controller/lenses/routeLenses";
 const mainRouter = express.Router()
 
 mainRouter.use('/products',routerProduct)
@@ -16,4 +17,5 @@ mainRouter.use('/auth',authRouter)
 mainRouter.use('/cart',cartRoute)
 mainRouter.use('/admin', adminRouter)
 mainRouter.use('/filter', routeFilter)
+mainRouter.use('/lenses', lenseRouter)
 export default mainRouter;

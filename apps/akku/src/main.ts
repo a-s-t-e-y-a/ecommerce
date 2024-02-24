@@ -4,10 +4,15 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mainRouter from './mainRoute';
 import bodyParser from 'body-parser';
-
+import session from 'express-session'
 const app = express();
 
-
+app.use(session({
+    secret: 'Akkukey', // Change this to a secure secret
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // Set to true if using HTTPS
+}));
 // Use bodyParser for parsing JSON and URL-encoded data
 app.use(express.json())
 app.use(bodyParser.json());
@@ -26,4 +31,5 @@ const server = app.listen(port, () => {
 });
 
 server.on('error', console.error);
+export default app;
 

@@ -52,7 +52,6 @@ CREATE TABLE `products` (
     `offer` VARCHAR(191) NULL,
     `glasses_size` VARCHAR(191) NULL,
     `bought` VARCHAR(191) NULL,
-    `rating` INTEGER NULL,
     `frame_width` VARCHAR(191) NULL,
     `temple_length` VARCHAR(191) NULL,
     `lens_height` VARCHAR(191) NULL,
