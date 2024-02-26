@@ -14,7 +14,12 @@ export async function getAllLenses(req: Request, res: Response) {
 
     const dataPromise = prisma.lenses.findMany({
       take: itemsPerPage,
-      skip: skip
+      skip: skip,
+      include:{
+        brand_id:true,
+        categories_id:true
+      }
+
     });
 
     const countPromise = prisma.lenses.count();

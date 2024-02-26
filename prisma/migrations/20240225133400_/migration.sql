@@ -50,7 +50,7 @@ CREATE TABLE `products` (
     `product_images` VARCHAR(191) NULL,
     `image` VARCHAR(191) NULL,
     `offer` VARCHAR(191) NULL,
-    `glasses_size` VARCHAR(191) NULL,
+    `size` INTEGER NULL,
     `bought` VARCHAR(191) NULL,
     `frame_width` VARCHAR(191) NULL,
     `temple_length` VARCHAR(191) NULL,
@@ -68,6 +68,14 @@ CREATE TABLE `products` (
     `productCategoriesId` INTEGER NOT NULL,
 
     PRIMARY KEY (`p_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Size` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -148,6 +156,16 @@ CREATE TABLE `lenses` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `powerType` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `uses` VARCHAR(191) NOT NULL,
+    `image` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `cartItem` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `productId` INTEGER NULL,
@@ -162,6 +180,22 @@ CREATE TABLE `cartItem` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Contact` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `firstName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phoneNo` VARCHAR(191) NOT NULL,
+    `address` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `state` VARCHAR(191) NOT NULL,
+    `zipCode` VARCHAR(191) NOT NULL,
+    `country` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `products` ADD CONSTRAINT `products_product_color_fkey` FOREIGN KEY (`product_color`) REFERENCES `frame_color`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -170,6 +204,9 @@ ALTER TABLE `products` ADD CONSTRAINT `products_shape_fkey` FOREIGN KEY (`shape`
 
 -- AddForeignKey
 ALTER TABLE `products` ADD CONSTRAINT `products_style_fkey` FOREIGN KEY (`style`) REFERENCES `style`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `products` ADD CONSTRAINT `products_size_fkey` FOREIGN KEY (`size`) REFERENCES `Size`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `products` ADD CONSTRAINT `products_productBrandId_fkey` FOREIGN KEY (`productBrandId`) REFERENCES `product_brands`(`products_brand_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -185,6 +222,9 @@ ALTER TABLE `lenses` ADD CONSTRAINT `lenses_products_categories_id_fkey` FOREIGN
 
 -- AddForeignKey
 ALTER TABLE `lenses` ADD CONSTRAINT `lenses_products_brand_id_fkey` FOREIGN KEY (`products_brand_id`) REFERENCES `product_brands`(`products_brand_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `lenses` ADD CONSTRAINT `lenses_power_type_fkey` FOREIGN KEY (`power_type`) REFERENCES `powerType`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `cartItem` ADD CONSTRAINT `cartItem_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `products`(`p_id`) ON DELETE SET NULL ON UPDATE CASCADE;
