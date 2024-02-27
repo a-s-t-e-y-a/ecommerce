@@ -39,7 +39,6 @@ model products {
   product_model_number    String?
   capacity                String?
   use_for                 String?
-  lens_matrial            String?
   dimensions              String?
   country_of_origin       String?
   row_metrial_source_from String?
@@ -187,6 +186,7 @@ model lensFeature{
   id    Int     @id @default(autoincrement())
   title  String
   description  String
+  image       String
   power_type                        Int
   power_type_                        powerType @relation(fields:[power_type], references:[id])
   lenses      lenses[]
@@ -194,7 +194,7 @@ model lensFeature{
 model powerType {
   id    Int     @id @default(autoincrement())
   name  String
-  uses  String
+  description  String
   image String
   lensFeature lensFeature[]
 }

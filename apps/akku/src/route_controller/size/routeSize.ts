@@ -13,6 +13,6 @@ const sizeRouter = express.Router();
 sizeRouter.get('/', getAllSizes)
 sizeRouter.get('/:id', getSizeById)
 sizeRouter.post('/',verifyToken,createSize)
-sizeRouter.put('/:id', updateSize)
+sizeRouter.put('/:id',verifyToken, updateSize)
 sizeRouter.delete('/:id', verifyToken,deleteSize)
 export default sizeRouter

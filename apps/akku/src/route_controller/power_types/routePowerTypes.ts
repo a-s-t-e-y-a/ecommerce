@@ -1,7 +1,15 @@
 import  express  from "express";
-import { getAllLenses } from "../lenses/controller/get";
 
+import upload from "../../middleware/upload";
+import { verifyToken } from "../../middleware/auth";
+import createPowerType from "./controller/createPowerType";
+import getPowerTypeById from "./controller/getPowerTypeById";
+import getAllPowerType from "./controller/getAllPowerTypes";
+import deletePowerType from "./controller/deletePowerType";
 const powerTypeRouter = express.Router();
-
-powerTypeRouter.get('/', getAllLenses)
+powerTypeRouter.get('/', getAllPowerType)
+powerTypeRouter.get('/:id', getPowerTypeById)
+powerTypeRouter.post('/',verifyToken,upload.single('file'),createPowerType)
+// powerTypeRouter.put('/:id', updateShape)
+powerTypeRouter.delete('/:id', verifyToken,deletePowerType)
 export default powerTypeRouter
