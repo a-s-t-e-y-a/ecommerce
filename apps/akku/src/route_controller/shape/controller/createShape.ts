@@ -12,18 +12,19 @@ export async function createShape(req: Authenticate, res: Response) {
   try {
     const data =req.body.data
     const file = req.fileUrl
-    console.log(data)
-    // if(!file){
-    //   throw new CustomError('File url is not uploaded', 'Error occurred', 200)
-    // }
-    // const info = await prisma.shape.create({
-    //   data:{
-    //     name:data.name,
-    //     image:file,
-    //   }
-    // })
-    // responseSuccess(res, new CustomSuccess('Data created succesfully',info,200));
+    console.log(file)
+    if(!file){
+      throw new CustomError('File url is not uploaded', 'Error occurred', 200)
+    }
+    const info = await prisma.shape.create({
+      data:{
+        name:data.name,
+        image:file,
+      }
+    })
+    responseSuccess(res, new CustomSuccess('Data created succesfully',info,200));
   } catch (error) {
+    console.log(error)
     responseError(res, error);
   }
 }

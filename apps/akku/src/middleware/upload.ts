@@ -1,51 +1,36 @@
-import  {  Response, NextFunction } from 'express';
-import multer from 'multer';
-import AWS from 'aws-sdk';
-import { v4 as uuidv4 } from 'uuid';
-import { Authenticate } from '../interfaces/reqInterface';
-import { responseError } from '../utils/responseError';
-import { CustomError } from '../utils/errorThrow';
+import multer from "multer";
+import multerS3 from "multer-s3";
+import { S3Client } from "@aws-sdk/client-s3";
+import { Authenticate } from '../interfaces/reqInterface'
 
-// Configure AWS S3
-const s3 = new AWS.S3({
-  accessKeyId: process.env.ACCESS_KEY,
-  secretAccessKey: process.env.SECRET_KEY,
+const s3Config = new S3Client({
+  region: process.env.REGION,
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY,
+    secretAccessKey: process.env.SECRET_KEY,
+  },
 });
 
-// Configure multer
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({
+  storage: multerS3({
+    s3: s3Config,
+    bucket: process.env.BUCKET_NAME,
+    region:process.env.REGION,
+    acl: "public-read",
+    contentType: (req:Authenticate, file, cb) => {
+      cb(null, file.mimetype);
+    },
+    metadata: (req:Authenticate, file, cb) => {
+      cb(null, { 'Content-Type': file.mimetype });
+    },
+    key: (req:Authenticate, file, cb) => {
+      const fileKey = Date.now() + file.originalname;
+      cb(null, fileKey);
+      // Now, you can return the file key, which is the file name
+      req.fileUrl = fileKey;
+    },
+  }),
+});
 
-// Function to handle file upload to S3
-export default function uploadToS3(req: Authenticate, res: Response, next: NextFunction) {
-  upload.single('file')(req, res, async (err: any) => {
-    try {
-    if (err) {
-      throw new CustomError('Error happend ', 'Error ouccred', 404);
-    }
+export default upload;
 
-    if (!req.file) {
-      throw new CustomError('File didnt uploaded', 'File not found', 404)
-      }
-
-    const file = req.file;
-
-    // Upload file to S3
-    const params: AWS.S3.PutObjectRequest = {
-      Bucket: process.env.BUCKET_NAME,
-      Key: `${uuidv4()}-${file.originalname}`,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-      ACL: 'public-read', // Adjust the ACL as needed
-    };
-
-
-      const uploadResult = await s3.upload(params).promise();
-      req.fileUrl = uploadResult.Location;
-      next();
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      responseError(res, error)
-    }
-  });
-}
