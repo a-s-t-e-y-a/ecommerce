@@ -10,16 +10,16 @@ const prisma = new PrismaClient();
 
 export async function createShape(req: Authenticate, res: Response) {
   try {
-    const data =req.body.data
+    const data =JSON.parse(req.body.data)
     const file = req.fileUrl
     console.log(file)
     if(!file){
-      throw new CustomError('File url is not uploaded', 'Error occurred', 200)
+      throw new CustomError('File url is not uploaded', 'Error occurred', 404)
     }
     const info = await prisma.shape.create({
       data:{
         name:data.name,
-        image:file,
+        image:process.env.BASE_URL_AWS_S3+file,
       }
     })
     responseSuccess(res, new CustomSuccess('Data created succesfully',info,200));
