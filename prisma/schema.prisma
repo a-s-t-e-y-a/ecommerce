@@ -118,8 +118,8 @@ model product_brands {
   brand_name             String?
   categories_id          product_categories @relation(fields: [products_categories_id], references: [products_categories_id])
   products_categories_id Int
-  created_on             String?
-  updated_on             String?
+  created_on             DateTime?
+  updated_on             DateTime?
   url                    String?
   products               products[]
   lenses                 lenses[]
@@ -131,8 +131,8 @@ model product_categories {
   name                   String?
   image                  String?
   position               Int?
-  created_on             String?
-  updated_on             String?
+  created_on             DateTime?
+  updated_on             DateTime?
   status                 Int              @default(1)
   url                    String?
   products               products[]

@@ -6,10 +6,11 @@ import { categoryCreate } from '../controller/category/create';
 import { categoryGetAll, categoryGetById } from '../controller/category/get';
 import { categoryUpdate } from '../controller/category/update';
 import { categoryDelete } from '../controller/category/delete';
+import upload from 'apps/akku/src/middleware/upload';
 
 const categories = express.Router();
 
-categories.post('/',verifyToken, categoryCreate );
+categories.post('/',verifyToken,upload.single('file'), categoryCreate );
 categories.get('/',categoryGetAll)
 categories.get('/:id',categoryGetById);
 categories.put('/:id', categoryUpdate);

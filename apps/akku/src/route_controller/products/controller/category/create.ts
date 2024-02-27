@@ -4,29 +4,28 @@ import { responseSuccess } from 'apps/akku/src/utils/responseSuccess';
 
 import { responseError } from 'apps/akku/src/utils/responseError';
 import { CustomSuccess } from 'apps/akku/src/utils/succes';
+import { Authenticate } from 'apps/akku/src/interfaces/reqInterface';
+import { CustomError } from 'apps/akku/src/utils/errorThrow';
+import { deleteObject } from 'apps/akku/src/interfaces/AWSInterface';
+import deleteS3Object from 'apps/akku/src/utils/deleteFromAwsSdk';
 
 const prisma = new PrismaClient();
 
-export const categoryCreate = async (req: Request, res: Response) => {
+export const categoryCreate = async (req: Authenticate, res: Response) => {
   try {
-    const {
-      name,
-      image,
-      position,
-      created_on,
-      updated_on,
-      status,
-      url,
-    } = req.body;
+   if(!req.fileUrl){
+      throw new CustomError('Please provide the file', 'Not found', 400)
+    }
+    const data = JSON.parse(req.body.data)
     const category = await prisma.product_categories.create({
       data: {
-        name,
-        image,
-        position,
-        created_on,
-        updated_on,
-        status,
-        url,
+        name:data.name,
+        image:req.fileUrl,
+        position:data.position,
+        created_on:new Date(),
+        updated_on:new Date(),
+        status:data.status,
+        url:data.url,
       },
     });
     responseSuccess(
@@ -34,6 +33,11 @@ export const categoryCreate = async (req: Request, res: Response) => {
       new CustomSuccess('New category is created successfully', category, 200)
     );
   } catch (err) {
+    const params:deleteObject={
+      Bucket:process.env.BUCKET_NAME,
+      Key:req.fileUrl
+    }
+    await deleteS3Object(params)
     responseError(res, err);
   }
 };

@@ -14,8 +14,6 @@ export const brandCreate = async (req: Request, res: Response) => {
       created_on,
       updated_on,
       url,
-      products,
-      lenses,
     } = req.body;
     const brand = await prisma.product_brands.create({
       data: {
@@ -23,11 +21,9 @@ export const brandCreate = async (req: Request, res: Response) => {
         categories_id: {
           connect: { products_categories_id: products_categories_id },
         },
-        created_on,
-        updated_on,
-        url,
-        products,
-        lenses,
+        created_on:new Date(),
+        updated_on:new Date(),
+        url
       },
     });
     responseSuccess(
