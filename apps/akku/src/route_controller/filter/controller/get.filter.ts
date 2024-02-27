@@ -8,9 +8,9 @@ const prisma = new PrismaClient()
 
 export async function getFilter(req:Request, res:Response){
       try {
-      const shape = await prisma.product_shape.findMany({})
+      const shape = await prisma.shape.findMany({})
       const style = await prisma.style.findMany({})
-    const color = await prisma.frame_color.findMany({})
+      const color = await prisma.color.findMany({})
     responseSuccess(res, new CustomSuccess('All filter fetched in products',{
       shape,
       style,

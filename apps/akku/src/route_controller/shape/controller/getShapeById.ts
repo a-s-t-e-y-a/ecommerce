@@ -18,7 +18,7 @@ export async function getShapeById(req: Request, res: Response) {
     if (!shape) {
       throw new CustomError('Shape does not exxit', 'Not Found', 404)
     }
-    responseSuccess(res, new CustomSuccess('Product found', data, 200));
+    responseSuccess(res, new CustomSuccess('Product found', shape, 200));
   } catch (error) {
     responseError(res, error);
   }

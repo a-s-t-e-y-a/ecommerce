@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import mainRouter from './mainRoute';
 import bodyParser from 'body-parser';
 import session from 'express-session'
+
 const app = express();
 
 app.use(session({
@@ -13,6 +14,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }, // Set to true if using HTTPS
 }));
+
 // Use bodyParser for parsing JSON and URL-encoded data
 app.use(express.json())
 app.use(bodyParser.json());
