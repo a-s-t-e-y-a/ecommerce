@@ -7,7 +7,7 @@ import { brandDelete } from '../controller/brand/delete';
 
 const brand = express.Router();
 
-brand.post('/',verifyToken, brandCreate );
+brand.post('/', brandCreate );
 brand.get('/', brandGetAll)
 brand.get('/:id',brandGetById);
 brand.put('/:id',verifyToken, brandUpdate);

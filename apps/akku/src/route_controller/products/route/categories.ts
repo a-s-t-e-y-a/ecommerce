@@ -10,7 +10,7 @@ import upload from 'apps/akku/src/middleware/upload';
 
 const categories = express.Router();
 
-categories.post('/',verifyToken,upload.single('file'), categoryCreate );
+categories.post('/',upload.single('file'), categoryCreate );
 categories.get('/',categoryGetAll)
 categories.get('/:id',categoryGetById);
 categories.put('/:id', categoryUpdate);

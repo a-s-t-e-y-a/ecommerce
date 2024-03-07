@@ -3,6 +3,7 @@ import { deleteObject } from "apps/akku/src/interfaces/AWSInterface";
 import { Authenticate } from "apps/akku/src/interfaces/reqInterface";
 import deleteS3Object from "apps/akku/src/utils/deleteFromAwsSdk";
 import { CustomError } from "apps/akku/src/utils/errorThrow";
+import getSpecifiedUrl from "apps/akku/src/utils/getSpecificFileName";
 import { responseError } from "apps/akku/src/utils/responseError";
 import { responseSuccess } from "apps/akku/src/utils/responseSuccess";
 import { CustomSuccess } from "apps/akku/src/utils/succes";
@@ -19,17 +20,18 @@ export default async function createLenseFeature(req:Authenticate, res:Response)
       data:{
         title:data.title,
         description:data.title,
-        power_type_:{connect:{id:parseInt(data.productId)}},
+        power_type_:{connect:{id:parseInt(data.power_type_id)}},
         image:process.env.BASE_URL_AWS_S3+file
       }
     })
     responseSuccess(res, new CustomSuccess('data created succesfully', info , 200))
   }catch(error){
-    const params : deleteObject= {
-      Bucket:process.env.BUCKET_NAME,
-      Key:req.fileUrl
-    }
-    await deleteS3Object(params)
+    // const params : deleteObject= {
+    //   Bucket:process.env.BUCKET_NAME,
+    //   Key:req.fileUrl
+    // }
+    // await deleteS3Object(params)
+    console.log(error)
     responseError(res, error)
   }
 }

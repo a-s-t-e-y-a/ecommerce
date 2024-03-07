@@ -55,12 +55,12 @@ export async function createProduct(req: Authenticate, res: Response) {
         coupon_code: data.coupon_code,
         coupon_amount: data.coupon_amount,
         stokke: data.stokke,
-        product_url: data.product_url,
+        product_url: data.product_model_name,
         seo_title: data.seo_title,
         keyword: data.keyword,
         created_on: new Date(),
         updated_on: new Date(),
-        status: data.status,
+        status: 1,
         productBrand: { connect: { products_brand_id: parseInt(data.productBrandId) } },
         productCategories: {
           connect: {

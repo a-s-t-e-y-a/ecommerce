@@ -20,12 +20,11 @@ export const categoryCreate = async (req: Authenticate, res: Response) => {
     const category = await prisma.product_categories.create({
       data: {
         name:data.name,
-        image:req.fileUrl,
-        position:data.position,
+        image:process.env.BASE_URL_AWS_S3+req.fileUrl,
         created_on:new Date(),
         updated_on:new Date(),
         status:data.status,
-        url:data.url,
+        url:data.name,
       },
     });
     responseSuccess(

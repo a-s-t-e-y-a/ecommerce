@@ -10,6 +10,7 @@ export default async function getAllLenseFeature(req:Authenticate, res:Response)
     const data = await prisma.lensFeature.findMany({})
     responseSuccess(res, new CustomSuccess('Data fetched sucessfully', data , 200))
   }catch(error){
+    console.log(error)
     responseError(res, error)
   }
 }

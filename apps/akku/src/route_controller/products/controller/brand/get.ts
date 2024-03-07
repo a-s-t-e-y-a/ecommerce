@@ -9,12 +9,17 @@ const prisma = new PrismaClient();
 // Get all brands
 export const brandGetAll = async (req: Request, res: Response) => {
   try {
-    const brands = await prisma.product_brands.findMany();
+    const brands = await prisma.product_brands.findMany({
+      include:{
+        categories_id:true
+      }
+    });
     responseSuccess(
       res,
       new CustomSuccess('Fetched all brands successfully', brands, 200)
     );
   } catch (err) {
+    console.log(err)
     responseError(res, err);
   }
 };

@@ -9,7 +9,7 @@ import deletePowerType from "./controller/deletePowerType";
 const powerTypeRouter = express.Router();
 powerTypeRouter.get('/', getAllPowerType)
 powerTypeRouter.get('/:id', getPowerTypeById)
-powerTypeRouter.post('/',verifyToken,upload.single('file'),createPowerType)
+powerTypeRouter.post('/',upload.single('file'),createPowerType)
 // powerTypeRouter.put('/:id', updateShape)
 powerTypeRouter.delete('/:id', verifyToken,deletePowerType)
 export default powerTypeRouter

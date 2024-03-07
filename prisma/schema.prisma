@@ -130,7 +130,6 @@ model product_categories {
   products_categories_id Int              @id @default(autoincrement())
   name                   String?
   image                  String?
-  position               Int?
   created_on             DateTime?
   updated_on             DateTime?
   status                 Int              @default(1)
@@ -169,9 +168,8 @@ model lenses {
   uv_protection                     Int?
   water_and_dust_repellent          Int?
   breakage_and_crack_resistant      Int?
-  offer                             String
-  created_at                        String
-  updated_at                        String?
+  created_at                        DateTime
+  updated_at                        DateTime
   lenses                            cartItem[]
 
   categories_id                     product_categories @relation(fields: [products_categories_id], references: [products_categories_id])

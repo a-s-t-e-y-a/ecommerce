@@ -8,22 +8,16 @@ const prisma = new PrismaClient();
 
 export const brandCreate = async (req: Request, res: Response) => {
   try {
-    const {
-      brand_name,
-      products_categories_id,
-      created_on,
-      updated_on,
-      url,
-    } = req.body;
+    const { brand_name, products_categories_id, url } = req.body;
     const brand = await prisma.product_brands.create({
       data: {
         brand_name,
         categories_id: {
-          connect: { products_categories_id: products_categories_id },
+          connect: { products_categories_id: parseInt(products_categories_id) },
         },
-        created_on:new Date(),
-        updated_on:new Date(),
-        url
+        created_on: new Date(),
+        updated_on: new Date(),
+        url:brand_name,
       },
     });
     responseSuccess(

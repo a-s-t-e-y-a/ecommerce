@@ -7,6 +7,6 @@ import createLenseFeature from "./controller/createLenseFeature";
 import deleteLensFeature from "./controller/deleteLenseFeature";
 const lenseFeatureRouter = express.Router();
 lenseFeatureRouter.get('/', getAllLenseFeature)
-lenseFeatureRouter.post('/',verifyToken,upload.single('file'),createLenseFeature)
+lenseFeatureRouter.post('/',upload.single('file'),createLenseFeature)
 lenseFeatureRouter.delete('/:id', verifyToken,deleteLensFeature)
 export default lenseFeatureRouter

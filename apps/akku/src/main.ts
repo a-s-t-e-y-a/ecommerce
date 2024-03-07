@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import session from 'express-session'
 
 const app = express();
-
+app.use(cors());
 app.use(session({
     secret: 'Akkukey', // Change this to a secure secret
     resave: false,
@@ -23,7 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Use CORS middleware to allow cross-origin requests
-app.use(cors());
 
 app.use('/api', mainRouter);
 

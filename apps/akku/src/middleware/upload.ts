@@ -27,7 +27,7 @@ const upload = multer({
       const fileKey = Date.now() + file.originalname;
       cb(null, fileKey);
       // Now, you can return the file key, which is the file name
-      console.log(fileKey)
+      console.log("test"+fileKey)
       req.fileUrl = fileKey;
     },
   }),

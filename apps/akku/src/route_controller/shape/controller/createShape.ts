@@ -10,22 +10,29 @@ const prisma = new PrismaClient();
 
 export async function createShape(req: Authenticate, res: Response) {
   try {
-    const data =JSON.parse(req.body.data)
-    const file = req.fileUrl
-    console.log(file)
-    if(!file){
-      throw new CustomError('File url is not uploaded', 'Error occurred', 404)
+    // Ensure proper handling of potential errors
+    const data = await JSON.parse(req.body.data); // Use await to handle potential parsing errors
+    const fileUrl = req.fileUrl; // Use a descriptive variable name
+
+    if (!fileUrl) {
+      throw new CustomError('File url is not uploaded', 'Error occurred', 404);
     }
+
     const info = await prisma.shape.create({
-      data:{
-        name:data.name,
-        image:process.env.BASE_URL_AWS_S3+file,
-      }
-    })
-    responseSuccess(res, new CustomSuccess('Data created succesfully',info,200));
+      data: {
+        name: data.name,
+        image: process.env.BASE_URL_AWS_S3 + fileUrl,
+      },
+    });
+
+    responseSuccess(res, new CustomSuccess('Data created successfully', info, 200));
   } catch (error) {
-    console.log(error)
-    responseError(res, error);
+    // Provide more informative and actionable error messages
+
+      console.error('An unexpected error occurred:', error);
+      responseError(res, error)
+
   }
 }
+
 

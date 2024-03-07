@@ -23,7 +23,6 @@ export const categoryUpdate = async (req: Request, res: Response) => {
         data: {
           name,
           image,
-          position,
           created_on,
           updated_on,
           status,

@@ -9,7 +9,7 @@ import { verifyToken } from "../../middleware/auth";
 const shapeRouter = express.Router();
 shapeRouter.get('/', getAllshape)
 shapeRouter.get('/:id', getShapeById)
-shapeRouter.post('/',verifyToken,upload.single('file'),createShape)
+shapeRouter.post('/',upload.single('file'),createShape)
 shapeRouter.put('/:id', updateShape)
 shapeRouter.delete('/:id', verifyToken,deleteShape)
 export default shapeRouter
