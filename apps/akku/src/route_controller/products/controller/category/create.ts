@@ -15,7 +15,7 @@ export const categoryCreate = async (req: Authenticate, res: Response) => {
   try {
     console.log(req.fileUrl)
    if(!req.fileUrl){
-      throw new CustomError('Please provide the file', 'Not found', 400)
+      throw new CustomError('Please provide the file', 'Not found', 404)
     }
     const data = JSON.parse(req.body.data)
     const category = await prisma.product_categories.create({
