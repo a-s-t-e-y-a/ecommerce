@@ -13,6 +13,7 @@ const prisma = new PrismaClient();
 
 export const categoryCreate = async (req: Authenticate, res: Response) => {
   try {
+    console.log(req.fileUrl)
    if(!req.fileUrl){
       throw new CustomError('Please provide the file', 'Not found', 400)
     }

@@ -18,9 +18,9 @@ export async function createProduct(req: Authenticate, res: Response) {
     if (req.files.length === 0||req.fileUrl==undefined) {
       throw new CustomError('Upload the specific file', 'Not found', 400);
     }
-
+    console.log(req.fileUrl)
     // Extract the file key from uploaded files
-    const fileKey = getFileKeys(req.files);
+    // const fileKey = getFileKeys(req.files);
 
     // Parse the product data from the request body
     const data = JSON.parse(req.body.data);
@@ -45,7 +45,7 @@ export async function createProduct(req: Authenticate, res: Response) {
         product_price: data.product_price,
         discounted_price: data.discounted_price,
         product_images: req.fileUrl, // Assuming no initial value for product_images
-        image: fileKey.join(','),
+        // image: fileKey.join(','),
         offer: data.offer,
         size_: { connect: { id: parseInt(data.size) } },
         bought: data.bought,
@@ -73,19 +73,19 @@ export async function createProduct(req: Authenticate, res: Response) {
     // Return the created product with status 201 (Created)
     responseSuccess(res, new CustomSuccess('Data uploaded successfully',product,200))
   } catch (error) {
-    console.error(error); // Log the actual error for debugging
-    const params1 : deleteObject = {
-      Bucket:process.env.BUCKET_NAME,
-      Key:req.fileUrl
-    }
-    await deleteS3Object(params1)
-    req.files.map(async (info:UploadedFile)=>{
-        const params2: deleteObject ={
-        Bucket:process.env.BUCKET_NAME,
-        Key:info.key
-      }
-      await deleteS3Object(params2)
-    })
+    // console.error(error); // Log the actual error for debugging
+    // const params1 : deleteObject = {
+    //   Bucket:process.env.BUCKET_NAME,
+    //   Key:req.fileUrl
+    // }
+    // await deleteS3Object(params1)
+    // req.files.map(async (info:UploadedFile)=>{
+    //     const params2: deleteObject ={
+    //     Bucket:process.env.BUCKET_NAME,
+    //     Key:info.key
+    //   }
+    //   await deleteS3Object(params2)
+    // })
     return res.status(500).json({ error: 'Error creating product' });
   }
 }

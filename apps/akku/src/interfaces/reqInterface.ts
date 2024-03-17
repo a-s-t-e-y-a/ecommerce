@@ -3,7 +3,7 @@ import { UploadedFile } from './uploadInterfaceMulter';
 export interface Authenticate extends Request {
     userId: number;
     sessionId: string;
-    files:UploadedFile[];
+    files:string[];
     fileUrl:string;
     data:any
   }
