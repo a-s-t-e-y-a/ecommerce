@@ -15,6 +15,7 @@ import lenseFeatureRouter from "./route_controller/lensFeature/routeLensFeature"
 import materialRouter from "./route_controller/material/routePowerType";
 import colorRouter from "./route_controller/color/routeColor";
 import styleRouter from "./route_controller/style/routeStyle";
+import contactRouter from "./route_controller/contact/routeContact";
 const mainRouter = express.Router()
 
 mainRouter.use('/products',routerProduct)
@@ -32,4 +33,5 @@ mainRouter.use('/lense-feature', lenseFeatureRouter)
 mainRouter.use('/material', materialRouter)
 mainRouter.use('/color', colorRouter)
 mainRouter.use('/style', styleRouter)
+mainRouter.use('/contact',contactRouter)
 export default mainRouter;
