@@ -3,6 +3,6 @@ import { postContactFrom } from './controller/post';
 
 const contactRouter = express.Router();
 
-contactRouter.get('/', postContactFrom)
+contactRouter.post('/', postContactFrom)
 export default contactRouter;
 
