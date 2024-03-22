@@ -12,9 +12,10 @@ const routerProduct = express.Router();
 
 routerProduct.post('/',arrayUpload.array('files',5), createProduct);
 routerProduct.get('/', getProducts)
+routerProduct.get('/count',getTotalProductCount)
 routerProduct.get('/:id', getProductById);
 routerProduct.put('/:id', verifyToken, updateProduct);
 routerProduct.delete('/:id', verifyToken, deleteProduct);
-routerProduct.get('/count',getTotalProductCount)
+
 
 export default routerProduct;

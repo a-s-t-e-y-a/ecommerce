@@ -27,7 +27,8 @@ export async function getTotalProductCount(req: Request, res: Response) {
     const totalCount = await prisma.products.count();
     return res.json({ total: totalCount });
   } catch (error) {
-    return res.status(500).json({ error: 'Error fetching total product count' });
+    
+    return res.status(500).send(error);
   } finally {
     await prisma.$disconnect();
   }
