@@ -17,10 +17,22 @@ export async function getProductById(req: Request, res: Response) {
     }
     return res.json(product);
   } catch (error) {
-    console.log(error)
     return res.status(500).json({ error: 'Error fetching product' });
   }
 }
+
+
+export async function getTotalProductCount(req: Request, res: Response) {
+  try {
+    const totalCount = await prisma.products.count();
+    return res.json({ total: totalCount });
+  } catch (error) {
+    return res.status(500).json({ error: 'Error fetching total product count' });
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 
 export async function getProducts(req: Request, res: Response) {
   try {

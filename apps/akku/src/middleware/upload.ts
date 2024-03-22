@@ -11,27 +11,35 @@ const s3Config = new S3Client({
   },
 });
 
+// Define a function to filter file types
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true); // Allow file upload
+  } else {
+    cb(new Error('Only images are allowed')); // Reject file upload
+  }
+};
+
 const upload = multer({
   storage: multerS3({
     s3: s3Config,
     bucket: process.env.BUCKET_NAME,
-    region:process.env.REGION,
+    region: process.env.REGION,
     acl: "public-read",
-    contentType: (req:Authenticate, file, cb) => {
+    contentType: (req: Authenticate, file, cb) => {
       cb(null, file.mimetype);
     },
-    metadata: (req:Authenticate, file, cb) => {
+    metadata: (req: Authenticate, file, cb) => {
       cb(null, { 'Content-Type': file.mimetype });
     },
-    key: (req:Authenticate, file, cb) => {
+    key: (req: Authenticate, file, cb) => {
       const fileKey = Date.now() + file.originalname;
       cb(null, fileKey);
       // Now, you can return the file key, which is the file name
-      console.log("test"+fileKey)
       req.fileUrl = fileKey;
     },
   }),
+  fileFilter: fileFilter // Apply file filter
 });
 
 export default upload;
-
