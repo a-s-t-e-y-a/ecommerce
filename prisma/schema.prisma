@@ -265,5 +265,5 @@ model blogs {
   description String
   url         String
   seo_title   String
-  created_on  DateTime  // Change the type to DateTime
+  created_on  String  // Change the type to DateTime
 }
