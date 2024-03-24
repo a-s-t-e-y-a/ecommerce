@@ -83,7 +83,11 @@ export async function getProducts(req: Request, res: Response) {
         shape_: true,
         product_color_:true,
         style_:true,
-        size_:true
+        size_:true,
+        productBrand:true,
+        productCategories:true,
+        product_color_:true,
+        material_:true,
       },
     });
 
