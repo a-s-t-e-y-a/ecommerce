@@ -16,6 +16,7 @@ import materialRouter from "./route_controller/material/routePowerType";
 import colorRouter from "./route_controller/color/routeColor";
 import styleRouter from "./route_controller/style/routeStyle";
 import contactRouter from "./route_controller/contact/routeContact";
+import blogsRouter from "./route_controller/blogs/route";
 const mainRouter = express.Router()
 
 mainRouter.use('/products',routerProduct)
@@ -34,4 +35,5 @@ mainRouter.use('/material', materialRouter)
 mainRouter.use('/color', colorRouter)
 mainRouter.use('/style', styleRouter)
 mainRouter.use('/contact',contactRouter)
+mainRouter.use('/blogs',blogsRouter)
 export default mainRouter;

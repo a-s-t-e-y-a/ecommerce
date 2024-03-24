@@ -258,4 +258,12 @@ model Contact {
 //   status       String
 // }
 
-
+model blogs {
+  id          Int      @id @default(autoincrement())
+  heading     String
+  thumb       String
+  description String
+  url         String
+  seo_title   String
+  created_on  DateTime  // Change the type to DateTime
+}
