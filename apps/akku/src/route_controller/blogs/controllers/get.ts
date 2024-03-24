@@ -5,6 +5,9 @@ const prisma = new PrismaClient();
 export const getAllBlogs = async (req: Request, res: Response) => {
     try {
       const blogs = await prisma.blogs.findMany();
+      blogs.forEach((item) => {
+      item['imageArray'] = `https://akkukachasma.s3.amazonaws.com/blogs/thumb/${item.thumb}`;
+    });
       res.status(200).json(blogs);
     } catch (error) {
       console.error('Error fetching blogs:', error);
