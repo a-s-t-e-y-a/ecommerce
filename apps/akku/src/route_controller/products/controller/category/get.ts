@@ -11,6 +11,9 @@ export const categoryGetAll = async (req: Request, res: Response) => {
     try {
       const categories = await prisma.product_categories.findMany({
       });
+      categories.forEach((item) => {
+      item['imageArray'] = `https://akkukachasma.s3.amazonaws.com/category/${item.image}`;
+    });
       responseSuccess(
         res,
         new CustomSuccess('Fetched all categories successfully', categories, 200)
