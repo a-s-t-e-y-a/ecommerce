@@ -39,6 +39,8 @@ export const categoryGetById = async (req: Request, res: Response) => {
       },
     });
 
+      category['imageArray'] = `https://akkukachasma.s3.amazonaws.com/category/${item.image}`;
+  
     if (!category) {
       throw new CustomError('Category not found', 'Bad request', 404);
     } else {
