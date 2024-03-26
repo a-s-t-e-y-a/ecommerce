@@ -17,7 +17,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
   export const getBlogById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const blog = await prisma.blogs.findUnique({
+      const blog = await prisma.blogs.findMany({
         where: {
           seo_title: id,
         },
