@@ -15,11 +15,11 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     }
   };
   export const getBlogById = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { seo_title } = req.params;
     try {
       const blog = await prisma.blogs.findUnique({
         where: {
-          id: parseInt(id),
+          seo_title: seo_title,
         },
       });
 
