@@ -15,18 +15,18 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     }
   };
   export const getBlogById = async (req: Request, res: Response) => {
-    const { seo_title } = req.params;
+    const { id } = req.params;
     try {
       const blog = await prisma.blogs.findUnique({
         where: {
-          seo_title: seo_title,
+          seo_title: id,
         },
       });
 
       if (!blog) {
         return res.status(404).json({ error: 'Blog not found' });
       }
-       blog['imageArray'] = `https://akkukachasma.s3.amazonaws.com/blogs/thumb/${item.thumb}`;
+      blog['imageArray'] = `https://akkukachasma.s3.amazonaws.com/blogs/thumb/${blog.thumb}`;
       res.status(200).json(blog);
     } catch (error) {
       console.error('Error fetching blog:', error);
