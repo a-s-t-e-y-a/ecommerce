@@ -26,7 +26,9 @@ export const getAllBlogs = async (req: Request, res: Response) => {
       if (!blog) {
         return res.status(404).json({ error: 'Blog not found' });
       }
-      blog['imageArray'] = `https://akkukachasma.s3.amazonaws.com/blogs/thumb/${blog.thumb}`;
+       blog.forEach((item) => {
+      item['imageArray'] = `https://akkukachasma.s3.amazonaws.com/blogs/thumb/${item.thumb}`;
+    });
       res.status(200).json(blog);
     } catch (error) {
       console.error('Error fetching blog:', error);
