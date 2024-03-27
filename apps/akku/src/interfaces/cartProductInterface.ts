@@ -1,6 +1,9 @@
 export interface Product {
-  productId: string;
-  quantity: number;
+  productId: Number;
+  // quantity: Number;
+  powerType: Number;
+  lensFeature: Number;
+  lens: Number;
 }
 
 

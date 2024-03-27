@@ -16,6 +16,9 @@ export async function getCartSession(req:CustomRequest, res:Response){
 
     // Extract product IDs from cart items
     const productIds = cartItems.map(item => Number(item.productId));
+    const powertypeIds = cartItems.map(item => Number(item.powerType));
+    const lensFeatureIds = cartItems.map(item => Number(item.lensFeature));
+    const lensIds = cartItems.map(item => Number(item.lens));
 
     // Fetch products from the database based on the product IDs
     const products = await prisma.products.findMany({
@@ -25,8 +28,29 @@ export async function getCartSession(req:CustomRequest, res:Response){
         },
       },
     });
+     const powertype = await prisma.powerType.findMany({
+      where: {
+        id: {
+          in: powertypeIds,
+        },
+      },
+    });
+      const lense_feature = await prisma.lensFeature.findMany({
+      where: {
+        id: {
+          in: lensFeatureIds,
+        },
+      },
+    });
+       const lenses_ = await prisma.lenses.findMany({
+      where: {
+        id: {
+          in: lensIds,
+        },
+      },
+    });
 
-    responseSuccess(res, new CustomSuccess('Cart items retrieved successfully', products, 200));  }
+    responseSuccess(res, new CustomSuccess('Cart items retrieved successfully', {products,powertype,lense_feature,lenses_}, 200));  }
   catch (error) {
     responseError(res, error);
   }
