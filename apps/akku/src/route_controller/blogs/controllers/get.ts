@@ -19,7 +19,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
     try {
       const blog = await prisma.blogs.findMany({
         where: {
-          seo_title: id,
+          url: id,
         },
       });
 
