@@ -21,7 +21,7 @@ export async function getProductById(req: Request, res: Response) {
         material_:true,
       }
     });
-    if (!product) {
+    if (!products) {
       return res.status(404).json({ error: 'Product not found' });
     }
     products.forEach((item) => {
@@ -30,7 +30,7 @@ export async function getProductById(req: Request, res: Response) {
       });
       item['imageArray'] = imageArray;
     });
-    return res.json(product);
+    return res.json(products);
   } catch (error) {
     return res.status(500).json({ error: 'Error fetching product' });
   }
